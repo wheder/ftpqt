@@ -9,6 +9,7 @@ Tym:
 - Holy
 - Slustik
 - Visek
+- Prucha
 
 Jazyk:
 - C a C++
