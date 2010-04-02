@@ -1,4 +1,4 @@
-#summary One-sentence summary of this page.
+#summary mrknete na tenhle hotovy
 #labels vzor,cpp,server
 
 = Introduction =
