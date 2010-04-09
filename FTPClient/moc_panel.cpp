@@ -23,7 +23,7 @@ static const uint qt_meta_data_Panel[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-       2,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,14 +31,17 @@ static const uint qt_meta_data_Panel[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-      19,    7,    6,    6, 0x08,
-      72,    7,    6,    6, 0x08,
+       7,    6,    6,    6, 0x08,
+      33,    6,    6,    6, 0x08,
+      66,   54,    6,    6, 0x08,
+     119,   54,    6,    6, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_Panel[] = {
-    "Panel\0\0item,column\0"
+    "Panel\0\0on_renameButton_clicked()\0"
+    "on_cdUpFTP_clicked()\0item,column\0"
     "on_treeWidgetFTP_itemActivated(QTreeWidgetItem*,int)\0"
     "on_treeWidgetLocal_itemActivated(QTreeWidgetItem*,int)\0"
 };
@@ -72,11 +75,13 @@ int Panel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: on_treeWidgetFTP_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 1: on_treeWidgetLocal_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 0: on_renameButton_clicked(); break;
+        case 1: on_cdUpFTP_clicked(); break;
+        case 2: on_treeWidgetFTP_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 3: on_treeWidgetLocal_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         default: ;
         }
-        _id -= 2;
+        _id -= 4;
     }
     return _id;
 }
