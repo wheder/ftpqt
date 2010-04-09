@@ -65,8 +65,7 @@ void Connection::ftp_connect() {
     QUrl url(ui->serverAddress->text());
     ftp_conn->connectToHost(ui->serverAddress->text(), 21);
 
-    std::cout << ftp_conn << std::endl;
-    std::cout << &ftp_conn << std::endl;
+
     if (ui->anonymousConnection->isChecked()) ftp_conn->login();
     else ftp_conn->login(ui->user->text(), ui->password->text());
     ui->statusLabel->setText(tr("Connecting to FTP server '%1'").arg(ui->serverAddress->text()));
@@ -120,14 +119,12 @@ void Connection::ftpCommandFinished(int, bool error)
         progressDialog->hide();
 //![8]
 //![9]
-    } else if (ftp->currentCommand() == QFtp::List) {
-        if (isDirectory.isEmpty()) {
-            fileList->addTopLevelItem(new QTreeWidgetItem(QStringList() << tr("<empty>")));
-            fileList->setEnabled(false);
-        }
+    }
+    */
+    else if (ftp_conn->currentCommand() == QFtp::List) {
     }
 //![9]
-*/
+
 }
 
 void Connection::addToList(const QUrlInfo &urlInfo)

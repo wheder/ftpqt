@@ -7,14 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>928</width>
-    <height>579</height>
+    <height>394</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="3">
+   <item row="3" column="3" colspan="2">
     <widget class="QTreeWidget" name="treeWidgetFTP">
      <property name="rootIsDecorated">
       <bool>false</bool>
@@ -36,7 +36,7 @@
      </column>
     </widget>
    </item>
-   <item row="1" column="2">
+   <item row="3" column="0" colspan="2">
     <widget class="QTreeWidget" name="treeWidgetLocal">
      <property name="rootIsDecorated">
       <bool>false</bool>
@@ -58,7 +58,28 @@
      </column>
     </widget>
    </item>
-   <item row="0" column="2">
+   <item row="0" column="3">
+    <widget class="QLabel" name="label_2">
+     <property name="text">
+      <string>FTP</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="4">
+    <widget class="QPushButton" name="cdUpFTP">
+     <property name="whatsThis">
+      <string>blbeeeeeeeeeeeeeeeeeeeec
+</string>
+     </property>
+     <property name="text">
+      <string>↑ (Up) (..)</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="2">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Local</string>
@@ -68,13 +89,31 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="3">
-    <widget class="QLabel" name="label_2">
+   <item row="4" column="0">
+    <widget class="QPushButton" name="uploadButton">
      <property name="text">
-      <string>FTP</string>
+      <string>Upload</string>
      </property>
-     <property name="alignment">
-      <set>Qt::AlignCenter</set>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QPushButton" name="renameButton">
+     <property name="text">
+      <string>Rename</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="3">
+    <widget class="QPushButton" name="deleteButton">
+     <property name="text">
+      <string>Delete</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="4">
+    <widget class="QPushButton" name="downloadButton">
+     <property name="text">
+      <string>Download</string>
      </property>
     </widget>
    </item>

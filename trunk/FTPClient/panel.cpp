@@ -9,6 +9,7 @@ Panel::Panel(QWidget *parent) :
     ui->setupUi(this);
     addItemLocal();
     ftp_con = NULL;
+    localPanelActive = false;
 }
 
 Panel::~Panel()
@@ -96,10 +97,11 @@ void Panel::on_treeWidgetFTP_itemActivated(QTreeWidgetItem* item, int /*column*/
         isDirFTP.clear();
         currentPathFTP += '/';
         currentPathFTP += name;
-        std::cout << ftp_con << std::endl;
-
+        //std::cout << ftp_con << std::endl;
+        ui->cdUpFTP->setEnabled(true);
         (*ftp_con)->cd(name);
         (*ftp_con)->list();
+
 
 
     }
@@ -110,4 +112,28 @@ void Panel::setFTPConn(QFtp **ftp)
 {   
     ftp_con = ftp;
 
+}
+
+
+void Panel::on_cdUpFTP_clicked()
+{
+    ui->treeWidgetFTP->clear();
+    isDirFTP.clear();
+    currentPathFTP = currentPathFTP.left(currentPathFTP.lastIndexOf('/'));
+    if (currentPathFTP.isEmpty()) {
+        ui->cdUpFTP->setEnabled(false);
+        (*ftp_con)->cd("/");
+    } else {
+        (*ftp_con)->cd(currentPathFTP);
+    }
+    (*ftp_con)->list();
+
+}
+
+void Panel::on_renameButton_clicked()
+{
+    std::cout <<  ui->treeWidgetFTP->isActiveWindow() << std::endl;
+    std::cout <<  ui->treeWidgetLocal->isActiveWindow() << std::endl;
+    //ui->treeWidgetFTP->
+    //ui->treeWidgetFTP->
 }

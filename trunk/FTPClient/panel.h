@@ -23,7 +23,6 @@ public:
     void addItemFTP(const QUrlInfo &urlInfo);
     void addItemLocal();
     void setFTPConn(QFtp **ftp);
-
 protected:
     void changeEvent(QEvent *e);
 
@@ -34,7 +33,15 @@ private:
     QHash<QString, bool> isDirFTP;
     QString currentPathFTP;
     QFtp **ftp_con;
+    bool localPanelActive;
+
+
+
+
+
 private slots:
+    void on_renameButton_clicked();
+    void on_cdUpFTP_clicked();
     void on_treeWidgetFTP_itemActivated(QTreeWidgetItem* item, int column);
     void on_treeWidgetLocal_itemActivated(QTreeWidgetItem* item, int column);
 };
