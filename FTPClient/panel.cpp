@@ -1,6 +1,7 @@
 #include "panel.h"
 #include "ui_panel.h"
 
+
 Panel::Panel(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Panel)
@@ -128,8 +129,40 @@ void Panel::on_cdUpFTP_clicked()
 
 void Panel::on_renameButton_clicked()
 {
-    std::cout <<  ui->treeWidgetFTP->isActiveWindow() << std::endl;
-    std::cout <<  ui->treeWidgetLocal->isActiveWindow() << std::endl;
-    //ui->treeWidgetFTP->
+    if (!ui->treeWidgetFTP->currentItem()) {//kdyz tam neni ani jedna polozka
+        QMessageBox::information(this, tr("Info"), tr("No item available!"));
+        return;
+    }
+    bool ok;
+    QString text = QInputDialog::getText(
+        this,
+        tr("Rename"),
+        tr("Rename '<b>%1</b>'<br /> to ").arg(ui->treeWidgetFTP->currentItem()->text(0)),
+        QLineEdit::Normal,
+        ui->treeWidgetFTP->currentItem()->text(0),
+        &ok
+    );
+
+    if (ok && !text.isEmpty()) {
+        (*ftp_con)->rename(ui->treeWidgetFTP->currentItem()->text(0), text);
+        (*ftp_con)->list();
+    }
+
+    /*
+    renameDialog = new RenameDialog(this);
+    renameDialog->setSourceFileName(ui->treeWidgetLocal->currentItem()->text(0));
+    renameDialog->show();
+    */
+    //this->setDisabled(true);
+
+}
+
+
+
+void Panel::on_uploadButton_clicked()
+{
+    //if (!ui->treeWidgetLocal->isItemSelected()) QMessageBox::information(this, tr("No item selected!"));
+    //if (!ui->treeWidgetLocal->currentItem())QMessageBox::information(this, tr("Info"), tr("No item selected!"));
+    //QMessageBox::information(this, tr("Info"),  ui->treeWidgetLocal->currentItem()->text(0));
 
 }

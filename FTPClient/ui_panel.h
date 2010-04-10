@@ -27,7 +27,6 @@ class Ui_Panel
 {
 public:
     QGridLayout *gridLayout;
-    QTreeWidget *treeWidgetFTP;
     QTreeWidget *treeWidgetLocal;
     QLabel *label_2;
     QPushButton *cdUpFTP;
@@ -36,6 +35,7 @@ public:
     QPushButton *renameButton;
     QPushButton *deleteButton;
     QPushButton *downloadButton;
+    QTreeWidget *treeWidgetFTP;
 
     void setupUi(QWidget *Panel)
     {
@@ -44,12 +44,6 @@ public:
         Panel->resize(928, 394);
         gridLayout = new QGridLayout(Panel);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-        treeWidgetFTP = new QTreeWidget(Panel);
-        treeWidgetFTP->setObjectName(QString::fromUtf8("treeWidgetFTP"));
-        treeWidgetFTP->setRootIsDecorated(false);
-
-        gridLayout->addWidget(treeWidgetFTP, 3, 3, 1, 2);
-
         treeWidgetLocal = new QTreeWidget(Panel);
         treeWidgetLocal->setObjectName(QString::fromUtf8("treeWidgetLocal"));
         treeWidgetLocal->setRootIsDecorated(false);
@@ -93,6 +87,12 @@ public:
 
         gridLayout->addWidget(downloadButton, 4, 4, 1, 1);
 
+        treeWidgetFTP = new QTreeWidget(Panel);
+        treeWidgetFTP->setObjectName(QString::fromUtf8("treeWidgetFTP"));
+        treeWidgetFTP->setRootIsDecorated(false);
+
+        gridLayout->addWidget(treeWidgetFTP, 3, 3, 1, 2);
+
 
         retranslateUi(Panel);
 
@@ -101,19 +101,13 @@ public:
 
     void retranslateUi(QWidget *Panel)
     {
-        Panel->setWindowTitle(QApplication::translate("Panel", "Form", 0, QApplication::UnicodeUTF8));
-        QTreeWidgetItem *___qtreewidgetitem = treeWidgetFTP->headerItem();
+        QTreeWidgetItem *___qtreewidgetitem = treeWidgetLocal->headerItem();
         ___qtreewidgetitem->setText(2, QApplication::translate("Panel", "Time", 0, QApplication::UnicodeUTF8));
         ___qtreewidgetitem->setText(1, QApplication::translate("Panel", "Size", 0, QApplication::UnicodeUTF8));
         ___qtreewidgetitem->setText(0, QApplication::translate("Panel", "Name", 0, QApplication::UnicodeUTF8));
-        QTreeWidgetItem *___qtreewidgetitem1 = treeWidgetLocal->headerItem();
-        ___qtreewidgetitem1->setText(2, QApplication::translate("Panel", "Time", 0, QApplication::UnicodeUTF8));
-        ___qtreewidgetitem1->setText(1, QApplication::translate("Panel", "Size", 0, QApplication::UnicodeUTF8));
-        ___qtreewidgetitem1->setText(0, QApplication::translate("Panel", "Name", 0, QApplication::UnicodeUTF8));
         label_2->setText(QApplication::translate("Panel", "FTP", 0, QApplication::UnicodeUTF8));
 #ifndef QT_NO_WHATSTHIS
-        cdUpFTP->setWhatsThis(QApplication::translate("Panel", "blbeeeeeeeeeeeeeeeeeeeec\n"
-"", 0, QApplication::UnicodeUTF8));
+        cdUpFTP->setWhatsThis(QString());
 #endif // QT_NO_WHATSTHIS
         cdUpFTP->setText(QApplication::translate("Panel", "\342\206\221 (Up) (..)", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("Panel", "Local", 0, QApplication::UnicodeUTF8));
@@ -121,6 +115,11 @@ public:
         renameButton->setText(QApplication::translate("Panel", "Rename", 0, QApplication::UnicodeUTF8));
         deleteButton->setText(QApplication::translate("Panel", "Delete", 0, QApplication::UnicodeUTF8));
         downloadButton->setText(QApplication::translate("Panel", "Download", 0, QApplication::UnicodeUTF8));
+        QTreeWidgetItem *___qtreewidgetitem1 = treeWidgetFTP->headerItem();
+        ___qtreewidgetitem1->setText(2, QApplication::translate("Panel", "Time", 0, QApplication::UnicodeUTF8));
+        ___qtreewidgetitem1->setText(1, QApplication::translate("Panel", "Size", 0, QApplication::UnicodeUTF8));
+        ___qtreewidgetitem1->setText(0, QApplication::translate("Panel", "Name", 0, QApplication::UnicodeUTF8));
+        Q_UNUSED(Panel);
     } // retranslateUi
 
 };
