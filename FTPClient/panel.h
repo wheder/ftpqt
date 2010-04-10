@@ -13,6 +13,7 @@
 #include <QIcon>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <QProgressBar>
 
 
 
@@ -40,10 +41,10 @@ private:
     QFtp **ftp_con;
     bool localPanelActive;
 
-
 private slots:
     void on_uploadButton_clicked();
     void on_renameButton_clicked();
+    void on_deleteButton_clicked();
     void on_cdUpFTP_clicked();
     void on_treeWidgetFTP_itemActivated(QTreeWidgetItem* item, int column);
     void on_treeWidgetLocal_itemActivated(QTreeWidgetItem* item, int column);

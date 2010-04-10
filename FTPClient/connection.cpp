@@ -61,7 +61,7 @@ void Connection::ftp_connect() {
 
     connect(ftp_conn, SIGNAL(commandFinished(int,bool)), this, SLOT(ftpCommandFinished(int,bool)));
     connect(ftp_conn, SIGNAL(listInfo(QUrlInfo)), this, SLOT(addToList(QUrlInfo)));
-    //connect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), this, SLOT(updateDataTransferProgress(qint64,qint64)));
+    connect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), this, SLOT(updateDataTransferProgress(qint64,qint64)));
     QUrl url(ui->serverAddress->text());
     ftp_conn->connectToHost(ui->serverAddress->text(), 21);
 
@@ -122,6 +122,14 @@ void Connection::ftpCommandFinished(int, bool error)
     }
     */
     else if (ftp_conn->currentCommand() == QFtp::List) {
+    }
+    else if (ftp_conn->currentCommand() == QFtp::Rename) {
+        if (error) {
+            QMessageBox::critical(this, tr("Error!"),
+                                     tr("'%1'")
+                                     .arg(ftp_conn->errorString()));
+            ftp_conn->list();
+        }
     }
 //![9]
 

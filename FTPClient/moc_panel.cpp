@@ -23,7 +23,7 @@ static const uint qt_meta_data_Panel[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       6,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -34,8 +34,9 @@ static const uint qt_meta_data_Panel[] = {
        7,    6,    6,    6, 0x08,
       33,    6,    6,    6, 0x08,
       59,    6,    6,    6, 0x08,
-      92,   80,    6,    6, 0x08,
-     145,   80,    6,    6, 0x08,
+      85,    6,    6,    6, 0x08,
+     118,  106,    6,    6, 0x08,
+     171,  106,    6,    6, 0x08,
 
        0        // eod
 };
@@ -43,6 +44,7 @@ static const uint qt_meta_data_Panel[] = {
 static const char qt_meta_stringdata_Panel[] = {
     "Panel\0\0on_uploadButton_clicked()\0"
     "on_renameButton_clicked()\0"
+    "on_deleteButton_clicked()\0"
     "on_cdUpFTP_clicked()\0item,column\0"
     "on_treeWidgetFTP_itemActivated(QTreeWidgetItem*,int)\0"
     "on_treeWidgetLocal_itemActivated(QTreeWidgetItem*,int)\0"
@@ -79,12 +81,13 @@ int Panel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         switch (_id) {
         case 0: on_uploadButton_clicked(); break;
         case 1: on_renameButton_clicked(); break;
-        case 2: on_cdUpFTP_clicked(); break;
-        case 3: on_treeWidgetFTP_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 4: on_treeWidgetLocal_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 2: on_deleteButton_clicked(); break;
+        case 3: on_cdUpFTP_clicked(); break;
+        case 4: on_treeWidgetFTP_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 5: on_treeWidgetLocal_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         default: ;
         }
-        _id -= 5;
+        _id -= 6;
     }
     return _id;
 }
