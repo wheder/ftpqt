@@ -50,7 +50,7 @@ void Connection::ftp_disconnect() {
     if (!ftp_conn) return;
     ftp_conn->abort();
     ftp_conn->deleteLater();
-    ftp_conn = NULL;
+    ftp_conn = NULL;    
 }
 
 
