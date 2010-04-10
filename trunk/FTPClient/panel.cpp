@@ -111,7 +111,6 @@ void Panel::setFTPConn(QFtp **ftp)
 
 }
 
-
 void Panel::on_cdUpFTP_clicked()
 {
     ui->treeWidgetFTP->clear();
@@ -129,34 +128,55 @@ void Panel::on_cdUpFTP_clicked()
 
 void Panel::on_renameButton_clicked()
 {
+
     if (!ui->treeWidgetFTP->currentItem()) {//kdyz tam neni ani jedna polozka
         QMessageBox::information(this, tr("Info"), tr("No item available!"));
         return;
     }
     bool ok;
     QString text = QInputDialog::getText(
-        this,
-        tr("Rename"),
-        tr("Rename '<b>%1</b>'<br /> to ").arg(ui->treeWidgetFTP->currentItem()->text(0)),
-        QLineEdit::Normal,
-        ui->treeWidgetFTP->currentItem()->text(0),
-        &ok
-    );
+            this,
+            tr("Rename"),
+            tr("Rename '<b>%1</b>'<br /> to ").arg(ui->treeWidgetFTP->currentItem()->text(0)),
+            QLineEdit::Normal,
+            ui->treeWidgetFTP->currentItem()->text(0),
+            &ok
+            );
 
     if (ok && !text.isEmpty()) {
         (*ftp_con)->rename(ui->treeWidgetFTP->currentItem()->text(0), text);
         (*ftp_con)->list();
-    }
-
-    /*
-    renameDialog = new RenameDialog(this);
-    renameDialog->setSourceFileName(ui->treeWidgetLocal->currentItem()->text(0));
-    renameDialog->show();
-    */
-    //this->setDisabled(true);
-
+    }   
 }
 
+
+void Panel::on_deleteButton_clicked()
+{
+    if (!ui->treeWidgetFTP->currentItem())
+    {
+        QMessageBox::information(this, tr("Info"), tr("No item available!"));
+        return;
+    }
+    QMessageBox::StandardButton reply;
+    reply = QMessageBox::question(this, tr("FTPClient"),
+                                  "Do you really want to delete file or directory: <br />" + QString(ui->treeWidgetFTP->currentItem()->text(0)) + " ?",
+                                  QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
+    if (reply == QMessageBox::Yes)
+    {
+        QString fileName = ui->treeWidgetFTP->currentItem()->text(0);
+        if (isDirFTP.value(fileName))
+        {
+            // RMDIR!!!!
+            //(*ftp_con)->
+        }else
+        {
+            (*ftp_con)->remove(fileName);
+        }
+        isDirFTP.clear();
+        ui->treeWidgetFTP->clear();
+        (*ftp_con)->list();
+    }    
+}
 
 
 void Panel::on_uploadButton_clicked()
@@ -166,3 +186,4 @@ void Panel::on_uploadButton_clicked()
     //QMessageBox::information(this, tr("Info"),  ui->treeWidgetLocal->currentItem()->text(0));
 
 }
+
