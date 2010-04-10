@@ -32,18 +32,15 @@ void Panel::changeEvent(QEvent *e)
 void Panel::addItemFTP(const QUrlInfo &urlInfo)
 {
     QTreeWidgetItem *item = new QTreeWidgetItem;
-    //item->setText(0, urlInfo.name()+(urlInfo.isDir() ? "/" : ""));
+
     item->setText(0, urlInfo.name());
     item->setText(1, QString::number(urlInfo.size()));
     item->setText(2, urlInfo.lastModified().toString());
 
-    // QPixmap pixmap(urlInfo.isDir() ? "./images/dir.png" : "./images/file.png");
+    QPixmap pixmap(urlInfo.isDir() ? ":/images/dir.png" : ":/images/file.png");
 
-    //item->setIcon(0, pixmap);
-
-    //std::cout << QString::number(pixmap.size().rwidth()).toStdString() << std::endl;
-
-    //isDirectory[urlInfo.name()] = urlInfo.isDir();
+    QIcon icon(pixmap);
+    item->setIcon(0, icon);    
 
     ui->treeWidgetFTP->addTopLevelItem(item);
     if (!ui->treeWidgetFTP->currentItem()) {
@@ -56,9 +53,7 @@ void Panel::addItemLocal()
 {
     QDir currentDir = QDir(currentPathLocal);
     QStringList files;
-    //    QString fileName;
-    //if (fileName.isEmpty())
-    //        fileName = "*";
+
     files = currentDir.entryList(QStringList(QString("*")));
 
     for (int i = 0; i < files.size(); ++i) {
@@ -68,7 +63,10 @@ void Panel::addItemLocal()
         item->setText(0, QFileInfo(file).fileName());
         item->setText(1, QString::number(QFileInfo(file).size()));
         item->setText(2, QFileInfo(file).created().toString());
+        QPixmap pixmap(QFileInfo(file).isDir() ? ":/images/dir.png" : ":/images/file.png");
 
+        QIcon icon(pixmap);
+        item->setIcon(0, icon);
 
 
         ui->treeWidgetLocal->addTopLevelItem(item);
@@ -97,12 +95,10 @@ void Panel::on_treeWidgetFTP_itemActivated(QTreeWidgetItem* item, int /*column*/
         isDirFTP.clear();
         currentPathFTP += '/';
         currentPathFTP += name;
-        //std::cout << ftp_con << std::endl;
+
         ui->cdUpFTP->setEnabled(true);
         (*ftp_con)->cd(name);
         (*ftp_con)->list();
-
-
 
     }
 }
@@ -135,5 +131,5 @@ void Panel::on_renameButton_clicked()
     std::cout <<  ui->treeWidgetFTP->isActiveWindow() << std::endl;
     std::cout <<  ui->treeWidgetLocal->isActiveWindow() << std::endl;
     //ui->treeWidgetFTP->
-    //ui->treeWidgetFTP->
+
 }

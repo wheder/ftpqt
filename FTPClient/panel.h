@@ -10,6 +10,7 @@
 #include <cstdio>
 #include <QPixmap>
 #include <QTreeWidgetItem>
+#include <QIcon>
 
 namespace Ui {
     class Panel;
