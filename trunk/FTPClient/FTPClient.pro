@@ -11,3 +11,4 @@ HEADERS += connection.h \
     panel.h
 FORMS += connection.ui \
     panel.ui
+RESOURCES += ftpClient.qrc
