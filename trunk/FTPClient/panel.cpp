@@ -145,10 +145,10 @@ void Panel::on_renameButton_clicked()
 
     if (ok && !text.isEmpty()) {
         (*ftp_con)->rename(ui->treeWidgetFTP->currentItem()->text(0), text);
+        ui->treeWidgetFTP->clear();
         (*ftp_con)->list();
     }   
 }
-
 
 void Panel::on_deleteButton_clicked()
 {
@@ -181,6 +181,10 @@ void Panel::on_deleteButton_clicked()
 
 void Panel::on_uploadButton_clicked()
 {
+
+    QProgressBar * p = new QProgressBar();
+    //p->
+    ui->transferScrollArea->addScrollBarWidget(p, Qt::AlignLeft);
     //if (!ui->treeWidgetLocal->isItemSelected()) QMessageBox::information(this, tr("No item selected!"));
     //if (!ui->treeWidgetLocal->currentItem())QMessageBox::information(this, tr("Info"), tr("No item selected!"));
     //QMessageBox::information(this, tr("Info"),  ui->treeWidgetLocal->currentItem()->text(0));
