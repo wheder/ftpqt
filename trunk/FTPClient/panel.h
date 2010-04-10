@@ -11,6 +11,10 @@
 #include <QPixmap>
 #include <QTreeWidgetItem>
 #include <QIcon>
+#include <QMessageBox>
+#include <QInputDialog>
+
+
 
 namespace Ui {
     class Panel;
@@ -37,10 +41,8 @@ private:
     bool localPanelActive;
 
 
-
-
-
 private slots:
+    void on_uploadButton_clicked();
     void on_renameButton_clicked();
     void on_cdUpFTP_clicked();
     void on_treeWidgetFTP_itemActivated(QTreeWidgetItem* item, int column);

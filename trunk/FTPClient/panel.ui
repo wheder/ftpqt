@@ -10,32 +10,7 @@
     <height>394</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="3" column="3" colspan="2">
-    <widget class="QTreeWidget" name="treeWidgetFTP">
-     <property name="rootIsDecorated">
-      <bool>false</bool>
-     </property>
-     <column>
-      <property name="text">
-       <string>Name</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Size</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Time</string>
-      </property>
-     </column>
-    </widget>
-   </item>
    <item row="3" column="0" colspan="2">
     <widget class="QTreeWidget" name="treeWidgetLocal">
      <property name="rootIsDecorated">
@@ -71,8 +46,7 @@
    <item row="0" column="4">
     <widget class="QPushButton" name="cdUpFTP">
      <property name="whatsThis">
-      <string>blbeeeeeeeeeeeeeeeeeeeec
-</string>
+      <string/>
      </property>
      <property name="text">
       <string>↑ (Up) (..)</string>
@@ -115,6 +89,28 @@
      <property name="text">
       <string>Download</string>
      </property>
+    </widget>
+   </item>
+   <item row="3" column="3" colspan="2">
+    <widget class="QTreeWidget" name="treeWidgetFTP">
+     <property name="rootIsDecorated">
+      <bool>false</bool>
+     </property>
+     <column>
+      <property name="text">
+       <string>Name</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Size</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Time</string>
+      </property>
+     </column>
     </widget>
    </item>
   </layout>
