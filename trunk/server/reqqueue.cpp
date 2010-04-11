@@ -4,10 +4,9 @@ ReqQueue ReqQueue::getReqQueue(int length);
 {
     if(instance==null)
     {
-        return new ReqQueue(length);
-    } else {
-        return instance;
+       instance = new ReqQueue(length);
     }
+    return instance;
 }
 
 ReqQueue ReqQueue::getReqQueue();
@@ -15,9 +14,8 @@ ReqQueue ReqQueue::getReqQueue();
     if(instance==null)
     {
         return new ReqQueue(50);
-    } else {
-        return instance;
     }
+    return instance;
 }
 
 ReqQueue::ReqQueue(int length)
