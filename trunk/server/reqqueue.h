@@ -11,14 +11,21 @@
   * USER, LIST, NOOP, etc. are removed earlier than request for FILE. Alternating of simple
   * and FILE commands is secured by counter of removed items from priority queue. After 10
   * simple commands in one line will remove 1 item from FILE queue. Queue has limited size.
-  * Queue also can show first item in both queues or on specify index.
+  * Queue also can show first item in both queues or on specified index.
   */
 class ReqQueue : public QObject
 {
     Q_QOBJECT
 
 public:
-    ReqQueue(int length);
+    /**
+      * Getter for creating / getting single instance of queue with preffered length.
+      */
+    ReqQueue getReqQueue(int length);
+    /**
+      * Getter for creating / getting single instance of queue with 50 items length.
+      */
+    ReqQueue getReqQueue();
     /**
       * Put QueueItem to back of queue. Simple FTP commands are putted to priority queue.
       */
@@ -60,8 +67,31 @@ public:
     int countItems(bool queueIdentificator);
 
 public slots:
+
 signals:
+    /**
+      * Signal report full queue.
+      */
+    full;
+    /**
+      * Signal report empty queue.
+      */
+    empty;
+    /**
+      * Signal indicates that any thread is working with queue.
+      */
+    entry;
+
 private:
+    /**
+      * Private constructor of singleton class ReqQueue. Create one instance of queue with preffered
+      * length.
+      */
+    ReqQueue(int length);
+    /**
+      * Static pointer to single instance of ReqQueue.
+      */
+    static ReqQueue instance = null;
     /**
       * Store queue of QueueItems contains simple FTP commands, e.g. LIST.
       */

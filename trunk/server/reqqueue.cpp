@@ -1,5 +1,25 @@
 #include "reqqueue.h"
 
+ReqQueue ReqQueue::getReqQueue(int length);
+{
+    if(instance==null)
+    {
+        return new ReqQueue(length);
+    } else {
+        return instance;
+    }
+}
+
+ReqQueue ReqQueue::getReqQueue();
+{
+    if(instance==null)
+    {
+        return new ReqQueue(50);
+    } else {
+        return instance;
+    }
+}
+
 ReqQueue::ReqQueue(int length)
 {
     queue = new QQueue<QueueItem>();
@@ -13,6 +33,8 @@ ReqQueue::ReqQueue(int length)
 
 void ReqQueue::enque(QueueItem in)
 {
+    emit entry;
+
     if(ReqQueue::isFull()){
         if(in.isSimpleCommand())//doimplementovat
         {
@@ -24,13 +46,16 @@ void ReqQueue::enque(QueueItem in)
         }
     } else {
         // Nemela by nastat, protoze, prijem connectionu by mel hlidat, jestli uz neni plno. Radsi ji tu ale nechavam.
-        throw Exception("Full queue.");
+        // throw Exception("Full queue.");
+        // Reseni pomoci signalu.
+        emit full;
     }
     count++;
 }
 
 QueueItem ReqQueue::dequeue()
 {
+    emit entry;
     if(!ReqQueue::isEmpty()){
         if(!priorityQueue.isEmpty() && (!queue.isEmpty() && priorityServed<=10))
         {
@@ -43,7 +68,9 @@ QueueItem ReqQueue::dequeue()
             countNormal--;
         }
     } else {
-        throw Exception("Empty queue.");
+        // throw Exception("Empty queue.");
+        // Reseni pomoci signalu.
+        emit empty;
     }
     count--;
 }
@@ -70,7 +97,7 @@ QueueItem ReqQueue::headFiles()
 
 QueueItem ReqQueue::onPosition(bool queueIdentificator, unsigned int index)
 {
-    if(queueIdentificator==0){
+    if(queueIdentificator==false){
         if(!queue.isEmpty())
         {
             if(index > countNormal){
