@@ -15,6 +15,7 @@ public:
     Connection(QWidget *parent = 0);
     ~Connection();
     QFtp *ftp_conn;
+    void pwd();
 protected:
     void changeEvent(QEvent *e);
     void ftp_connect();
@@ -26,12 +27,15 @@ private:
     Panel *panel;
     QString currentPathFTP;
 
+
 private slots:
     void on_buttonBox_rejected();
     void on_buttonBox_accepted();
     void ftpCommandFinished(int, bool error);
     void addToList(const QUrlInfo &urlInfo);
-
+    void ftp_rawCommandReply( int code, const QString &text );
+signals:
+    void pwdChanged(const QString &);
 };
 
 #endif // CONNECTION_H

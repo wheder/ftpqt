@@ -23,7 +23,7 @@ static const uint qt_meta_data_Panel[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-       6,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -37,6 +37,8 @@ static const uint qt_meta_data_Panel[] = {
       85,    6,    6,    6, 0x08,
      118,  106,    6,    6, 0x08,
      171,  106,    6,    6, 0x08,
+     230,  226,    6,    6, 0x08,
+     249,    6,    6,    6, 0x08,
 
        0        // eod
 };
@@ -48,6 +50,7 @@ static const char qt_meta_stringdata_Panel[] = {
     "on_cdUpFTP_clicked()\0item,column\0"
     "on_treeWidgetFTP_itemActivated(QTreeWidgetItem*,int)\0"
     "on_treeWidgetLocal_itemActivated(QTreeWidgetItem*,int)\0"
+    "pwd\0changePwd(QString)\0on_cdUpLocal_clicked()\0"
 };
 
 const QMetaObject Panel::staticMetaObject = {
@@ -85,9 +88,11 @@ int Panel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 3: on_cdUpFTP_clicked(); break;
         case 4: on_treeWidgetFTP_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         case 5: on_treeWidgetLocal_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 6: changePwd((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 7: on_cdUpLocal_clicked(); break;
         default: ;
         }
-        _id -= 6;
+        _id -= 8;
     }
     return _id;
 }
