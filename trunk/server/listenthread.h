@@ -9,14 +9,14 @@ class ListenThread : public QThread
 {
     Q_OBJECT
 public:
-    ListenThread getListenThread();
+    static ListenThread getListenThread();
 public slots:
     void closeListen();
 signals:
-    incomingConnection;
-    stopListen;
+    void incomingConnection();
+    void stopListen();
 private:
-    ListenThread lt;
+    static ListenThread lt;
     QTcpServer server;
     QTcpSocket serverSocket;
     unsigned int socketDesriptor = 0;

@@ -15,13 +15,13 @@
   */
 class ReqQueue : public QObject
 {
-    Q_QOBJECT
+    Q_OBJECT
 
 public:
     /**
       * Getter for creating / getting single instance of queue with preffered length.
       */
-    ReqQueue getReqQueue(int length);
+    static ReqQueue getReqQueue(int length);
     /**
       * Getter for creating / getting single instance of queue with 50 items length.
       */
@@ -72,15 +72,15 @@ signals:
     /**
       * Signal report full queue.
       */
-    full;
+    void full();
     /**
       * Signal report empty queue.
       */
-    empty;
+    void empty();
     /**
       * Signal indicates that any thread is working with queue.
       */
-    entry;
+    void entry();
 
 private:
     /**
@@ -91,15 +91,15 @@ private:
     /**
       * Static pointer to single instance of ReqQueue.
       */
-    static ReqQueue instance = null;
+    static ReqQueue instance;
     /**
       * Store queue of QueueItems contains simple FTP commands, e.g. LIST.
       */
-    QQueue priorityQueue<QueueItem>;
+    QQueue<QueueItem> priorityQueue;
     /**
       * Store queue of QueueItems contains requests for file.
       */
-    QQueue queue<QueueItem>;
+    QQueue<QueueItem> queue;
     /**
       * Size of all queue.
       */

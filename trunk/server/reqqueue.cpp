@@ -1,4 +1,5 @@
 #include "reqqueue.h"
+instance = null;
 
 ReqQueue ReqQueue::getReqQueue(int length);
 {
@@ -46,7 +47,7 @@ void ReqQueue::enque(QueueItem in)
         // Nemela by nastat, protoze, prijem connectionu by mel hlidat, jestli uz neni plno. Radsi ji tu ale nechavam.
         // throw Exception("Full queue.");
         // Reseni pomoci signalu.
-        emit full;
+        emit full();
     }
     count++;
 }
@@ -68,7 +69,7 @@ QueueItem ReqQueue::dequeue()
     } else {
         // throw Exception("Empty queue.");
         // Reseni pomoci signalu.
-        emit empty;
+        emit empty();
     }
     count--;
 }
@@ -79,7 +80,8 @@ QueueItem ReqQueue::headSimpleCommands()
     {
         priorityQueue.head();
     } else {
-        throw Exception("Empty queue.");
+        //throw Exception("Empty queue.");
+        emit empty();
     }
 }
 
@@ -89,7 +91,8 @@ QueueItem ReqQueue::headFiles()
     {
         queue.head();
     } else {
-        throw Exception("Empty queue.");
+        //throw Exception("Empty queue.");
+        emit empty();
     }
 }
 
@@ -105,7 +108,8 @@ QueueItem ReqQueue::onPosition(bool queueIdentificator, unsigned int index)
                 return queue.at(index);
             }
         } else {
-            throw Exception("Empty queue.");
+            //throw Exception("Empty queue.");
+            emit empty();
         }
     } else {
         if(!priorityQueue.isEmpty())
@@ -117,7 +121,8 @@ QueueItem ReqQueue::onPosition(bool queueIdentificator, unsigned int index)
                 return priorityQueue.at(index);
             }
         } else {
-            throw Exception("Empty queue.");
+            //throw Exception("Empty queue.");
+            emit empty();
         }
 
     }

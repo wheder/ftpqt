@@ -17,7 +17,7 @@
 // lastUpdate. Tak to necham az podle casu, doimplementovani by snad nebylo narocne na zmeny.
 class QueueItem : public QObject
 {
-    Q_QOBJECT
+    Q_OBJECT
 
 public:
     /**
@@ -43,7 +43,7 @@ public:
     void setProcessedByte(int index);
 
 signals:
-    //needRefresh;
+    //void needRefresh(;
 
 private:
     /**
