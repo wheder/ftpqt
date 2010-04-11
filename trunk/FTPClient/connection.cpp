@@ -62,6 +62,7 @@ void Connection::ftp_connect() {
     connect(ftp_conn, SIGNAL(commandFinished(int,bool)), this, SLOT(ftpCommandFinished(int,bool)));
     connect(ftp_conn, SIGNAL(listInfo(QUrlInfo)), this, SLOT(addToList(QUrlInfo)));
     connect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), this, SLOT(updateDataTransferProgress(qint64,qint64)));
+    connect(ftp_conn, SIGNAL(rawCommandReply(int, const QString &)), this, SLOT(ftp_rawCommandReply(int, const QString &)) );
     QUrl url(ui->serverAddress->text());
     ftp_conn->connectToHost(ui->serverAddress->text(), 21);
 
@@ -73,6 +74,7 @@ void Connection::ftp_connect() {
 
 void Connection::ftpCommandFinished(int, bool error)
 {
+    pwd();
     if (ftp_conn->currentCommand() == QFtp::ConnectToHost) {
         if (error) {
             QMessageBox::information(this, tr("FTP"),
@@ -87,6 +89,7 @@ void Connection::ftpCommandFinished(int, bool error)
 
 
         panel->show();
+        connect( this, SIGNAL(pwdChanged(const QString &)), panel, SLOT(changePwd(const QString &)) );
         this->hide();
 
         //downloadButton->setDefault(true);
@@ -121,6 +124,10 @@ void Connection::ftpCommandFinished(int, bool error)
 //![9]
     }
     */
+    else if (ftp_conn->currentCommand() == QFtp::Mkdir) {
+        std::cout<<"created"<<std::endl;
+        //ftp_conn->list();
+    }
     else if (ftp_conn->currentCommand() == QFtp::List) {
     }
     else if (ftp_conn->currentCommand() == QFtp::Rename) {
@@ -141,4 +148,17 @@ void Connection::addToList(const QUrlInfo &urlInfo)
 }
 
 
+void Connection::ftp_rawCommandReply( int code, const QString &text )
+{
+    if ( code == 257 ) {
+        QString pwd;
+        pwd = text.section( '"', 1, 1 );
+        emit pwdChanged(pwd);
 
+    }
+}
+
+
+void Connection::pwd() {
+    ftp_conn->rawCommand("PWD");
+}

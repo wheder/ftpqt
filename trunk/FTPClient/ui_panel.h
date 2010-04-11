@@ -18,7 +18,7 @@
 #include <QtGui/QGridLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
-#include <QtGui/QProgressBar>
+#include <QtGui/QLineEdit>
 #include <QtGui/QPushButton>
 #include <QtGui/QScrollArea>
 #include <QtGui/QTreeWidget>
@@ -42,8 +42,9 @@ public:
     QScrollArea *transferScrollArea;
     QWidget *scrollAreaWidgetContents;
     QFormLayout *formLayout;
-    QLabel *label_3;
-    QProgressBar *progressBar;
+    QLineEdit *localPathLineEdit;
+    QLineEdit *ftpPathLineEdit;
+    QPushButton *cdUpLocal;
 
     void setupUi(QWidget *Panel)
     {
@@ -73,57 +74,63 @@ public:
         treeWidgetLocal->setObjectName(QString::fromUtf8("treeWidgetLocal"));
         treeWidgetLocal->setRootIsDecorated(false);
 
-        gridLayout->addWidget(treeWidgetLocal, 1, 0, 1, 2);
+        gridLayout->addWidget(treeWidgetLocal, 3, 0, 1, 2);
 
         treeWidgetFTP = new QTreeWidget(Panel);
         treeWidgetFTP->setObjectName(QString::fromUtf8("treeWidgetFTP"));
         treeWidgetFTP->setRootIsDecorated(false);
 
-        gridLayout->addWidget(treeWidgetFTP, 1, 2, 1, 2);
+        gridLayout->addWidget(treeWidgetFTP, 3, 2, 1, 2);
 
         uploadButton = new QPushButton(Panel);
         uploadButton->setObjectName(QString::fromUtf8("uploadButton"));
 
-        gridLayout->addWidget(uploadButton, 3, 0, 1, 1);
+        gridLayout->addWidget(uploadButton, 5, 0, 1, 1);
 
         renameButton = new QPushButton(Panel);
         renameButton->setObjectName(QString::fromUtf8("renameButton"));
 
-        gridLayout->addWidget(renameButton, 3, 1, 1, 1);
+        gridLayout->addWidget(renameButton, 5, 1, 1, 1);
 
         deleteButton = new QPushButton(Panel);
         deleteButton->setObjectName(QString::fromUtf8("deleteButton"));
 
-        gridLayout->addWidget(deleteButton, 3, 2, 1, 1);
+        gridLayout->addWidget(deleteButton, 5, 2, 1, 1);
 
         downloadButton = new QPushButton(Panel);
         downloadButton->setObjectName(QString::fromUtf8("downloadButton"));
 
-        gridLayout->addWidget(downloadButton, 3, 3, 1, 1);
+        gridLayout->addWidget(downloadButton, 5, 3, 1, 1);
 
         transferScrollArea = new QScrollArea(Panel);
         transferScrollArea->setObjectName(QString::fromUtf8("transferScrollArea"));
         transferScrollArea->setWidgetResizable(true);
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 914, 216));
+        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 914, 201));
         formLayout = new QFormLayout(scrollAreaWidgetContents);
         formLayout->setObjectName(QString::fromUtf8("formLayout"));
         formLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
-        label_3 = new QLabel(scrollAreaWidgetContents);
-        label_3->setObjectName(QString::fromUtf8("label_3"));
-
-        formLayout->setWidget(0, QFormLayout::LabelRole, label_3);
-
-        progressBar = new QProgressBar(scrollAreaWidgetContents);
-        progressBar->setObjectName(QString::fromUtf8("progressBar"));
-        progressBar->setValue(24);
-
-        formLayout->setWidget(0, QFormLayout::FieldRole, progressBar);
-
         transferScrollArea->setWidget(scrollAreaWidgetContents);
 
-        gridLayout->addWidget(transferScrollArea, 4, 0, 1, 4);
+        gridLayout->addWidget(transferScrollArea, 6, 0, 1, 4);
+
+        localPathLineEdit = new QLineEdit(Panel);
+        localPathLineEdit->setObjectName(QString::fromUtf8("localPathLineEdit"));
+        localPathLineEdit->setReadOnly(true);
+
+        gridLayout->addWidget(localPathLineEdit, 2, 0, 1, 2);
+
+        ftpPathLineEdit = new QLineEdit(Panel);
+        ftpPathLineEdit->setObjectName(QString::fromUtf8("ftpPathLineEdit"));
+        ftpPathLineEdit->setReadOnly(true);
+
+        gridLayout->addWidget(ftpPathLineEdit, 2, 2, 1, 2);
+
+        cdUpLocal = new QPushButton(Panel);
+        cdUpLocal->setObjectName(QString::fromUtf8("cdUpLocal"));
+
+        gridLayout->addWidget(cdUpLocal, 0, 1, 1, 1);
 
 
         retranslateUi(Panel);
@@ -151,7 +158,7 @@ public:
         renameButton->setText(QApplication::translate("Panel", "Rename", 0, QApplication::UnicodeUTF8));
         deleteButton->setText(QApplication::translate("Panel", "Delete", 0, QApplication::UnicodeUTF8));
         downloadButton->setText(QApplication::translate("Panel", "Download", 0, QApplication::UnicodeUTF8));
-        label_3->setText(QApplication::translate("Panel", "TextLabel", 0, QApplication::UnicodeUTF8));
+        cdUpLocal->setText(QApplication::translate("Panel", "\342\206\221 (Up) (..)", 0, QApplication::UnicodeUTF8));
         Q_UNUSED(Panel);
     } // retranslateUi
 
