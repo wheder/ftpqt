@@ -3,6 +3,8 @@
 
 class serveThread
 {
+    Q_OBJECT
+
 public:
     serveThread();
 };
