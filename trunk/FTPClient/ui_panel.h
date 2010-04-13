@@ -14,7 +14,6 @@
 #include <QtGui/QAction>
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
-#include <QtGui/QFormLayout>
 #include <QtGui/QGridLayout>
 #include <QtGui/QHeaderView>
 #include <QtGui/QLabel>
@@ -41,7 +40,7 @@ public:
     QPushButton *downloadButton;
     QScrollArea *transferScrollArea;
     QWidget *scrollAreaWidgetContents;
-    QFormLayout *formLayout;
+    QGridLayout *gridLayout_2;
     QLineEdit *localPathLineEdit;
     QLineEdit *ftpPathLineEdit;
     QPushButton *cdUpLocal;
@@ -108,9 +107,8 @@ public:
         scrollAreaWidgetContents = new QWidget();
         scrollAreaWidgetContents->setObjectName(QString::fromUtf8("scrollAreaWidgetContents"));
         scrollAreaWidgetContents->setGeometry(QRect(0, 0, 914, 201));
-        formLayout = new QFormLayout(scrollAreaWidgetContents);
-        formLayout->setObjectName(QString::fromUtf8("formLayout"));
-        formLayout->setFieldGrowthPolicy(QFormLayout::ExpandingFieldsGrow);
+        gridLayout_2 = new QGridLayout(scrollAreaWidgetContents);
+        gridLayout_2->setObjectName(QString::fromUtf8("gridLayout_2"));
         transferScrollArea->setWidget(scrollAreaWidgetContents);
 
         gridLayout->addWidget(transferScrollArea, 6, 0, 1, 4);

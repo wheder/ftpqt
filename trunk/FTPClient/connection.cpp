@@ -52,7 +52,9 @@ void Connection::ftp_disconnect() {
     ftp_conn->deleteLater();
     ftp_conn = NULL;    
 }
+void Connection::thisWantsTransfer(QFtp * conn ,TransferQueueItem & itemToTransfer){
 
+}
 
 void Connection::ftp_connect() {
     ftp_disconnect();
@@ -74,13 +76,20 @@ void Connection::ftp_connect() {
 
 void Connection::ftpCommandFinished(int, bool error)
 {
-    pwd();
+
+    if (ftp_conn->currentCommand() != QFtp::RawCommand) pwd();
+    //ta svina se zacyklila...
+
+    if (error) {
+        std::cerr<< "Error: "<<ftp_conn->errorString().toStdString() <<std::endl;
+    }
+
     if (ftp_conn->currentCommand() == QFtp::ConnectToHost) {
         if (error) {
             QMessageBox::information(this, tr("FTP"),
                                      tr("Unable to connect to the FTP server "
-                                        "at '%1'")
-                                     .arg(ui->serverAddress->text()));
+                                        "at '%1'<br />%2")
+                                     .arg(ui->serverAddress->text()).arg(ftp_conn->errorString()));
             ftp_disconnect();
             return;
         }

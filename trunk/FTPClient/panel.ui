@@ -127,11 +127,7 @@
         <height>201</height>
        </rect>
       </property>
-      <layout class="QFormLayout" name="formLayout">
-       <property name="fieldGrowthPolicy">
-        <enum>QFormLayout::ExpandingFieldsGrow</enum>
-       </property>
-      </layout>
+      <layout class="QGridLayout" name="gridLayout_2"/>
      </widget>
     </widget>
    </item>

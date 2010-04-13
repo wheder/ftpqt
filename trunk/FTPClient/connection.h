@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QtNetwork>
 #include "panel.h"
+#include <QQueue>
+#include "transferqueueitem.h"
 
 namespace Ui {
     class Connection;
@@ -26,7 +28,7 @@ private:
 
     Panel *panel;
     QString currentPathFTP;
-
+    QQueue<TransferQueueItem> transferQueue;
 
 private slots:
     void on_buttonBox_rejected();
@@ -34,6 +36,8 @@ private slots:
     void ftpCommandFinished(int, bool error);
     void addToList(const QUrlInfo &urlInfo);
     void ftp_rawCommandReply( int code, const QString &text );
+    void thisWantsTransfer(QFtp * conn ,TransferQueueItem & itemToTransfer);
+
 signals:
     void pwdChanged(const QString &);
 };
