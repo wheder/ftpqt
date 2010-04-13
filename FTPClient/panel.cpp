@@ -209,6 +209,7 @@ void Panel::directoryStructureOnFtpCreated(bool error) {
 
 
     connect((*ftp_con), SIGNAL(done(bool)), this, SLOT(startTransfers(bool)));
+
 }
 
 void Panel::on_uploadButton_clicked()
@@ -290,7 +291,7 @@ void Panel::uploadFile(QString local, QString ftp, QString file) {
 
     QProgressBar * p = new QProgressBar(ui->scrollAreaWidgetContents);
     p->setMaximum(QFile(local+file).size());
-    p->setValue(fileSize);
+    p->setValue(0);
     QLabel * l = new QLabel(ui->scrollAreaWidgetContents);
     l->setText(file);
     l->setToolTip(local+QString(" -> ")+ftp);
