@@ -56,15 +56,18 @@ void Connection::ftp_disconnect() {
     this->show();
 }
 void Connection::startTransfer(QFtp * conn ,TransferQueueItem * itemToTransfer){
-    connect(conn, SIGNAL(dataTransferProgress(qint64,qint64)), itemToTransfer, SLOT(updateProgress(qint64,qint64)));
+
     QFile * file = new QFile(itemToTransfer->getLocalDir()+QString("/")+itemToTransfer->getFileName());
     if (!file->open(QIODevice::ReadOnly)) {
         QMessageBox::critical(this, tr("Error"), tr("Cannot open file '%1' for reading!").arg(itemToTransfer->getFileName()));
         return;
     }
-    conn->put(file, itemToTransfer->getFtpDir()+QString("/")+itemToTransfer->getFileName());
+    Command command;
 
-    //delete itemToTransfer;
+    command.id = conn->put(file, itemToTransfer->getFtpDir()+QString("/")+itemToTransfer->getFileName());
+    command.itemToTransfer = itemToTransfer;
+    doneQueue.append(command);
+
 }
 
 void Connection::ftp_connect() {
@@ -73,8 +76,8 @@ void Connection::ftp_connect() {
 
 
     connect(ftp_conn, SIGNAL(commandFinished(int,bool)), this, SLOT(ftpCommandFinished(int,bool)));
-    connect(ftp_conn, SIGNAL(listInfo(QUrlInfo)), this, SLOT(addToList(QUrlInfo)));
-    //connect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), this, SLOT(updateDataTransferProgress(qint64,qint64)));
+    connect(ftp_conn, SIGNAL(commandStarted(int)), this, SLOT(ftpCommandStarted(int)));
+    connect(ftp_conn, SIGNAL(listInfo(QUrlInfo)), this, SLOT(addToList(QUrlInfo)));  
     connect(ftp_conn, SIGNAL(rawCommandReply(int, const QString &)), this, SLOT(ftp_rawCommandReply(int, const QString &)) );
     QUrl url(ui->serverAddress->text());
     ftp_conn->connectToHost(ui->serverAddress->text(), 21);
@@ -85,7 +88,23 @@ void Connection::ftp_connect() {
     ui->statusLabel->setText(tr("Connecting to FTP server '%1'").arg(ui->serverAddress->text()));
 }
 
-void Connection::ftpCommandFinished(int, bool error)
+void Connection::ftpCommandStarted(int id)
+{
+    if (ftp_conn->currentCommand() == QFtp::Put) {
+        Command command;
+        for (int i = 0 ; i < doneQueue.size() ; i++)
+        {
+            command = doneQueue.at(i);
+            if (command.id == id)
+            {
+                connect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), command.itemToTransfer, SLOT(updateProgress(qint64,qint64)));
+                break;
+            }
+        }
+    }
+}
+
+void Connection::ftpCommandFinished(int id, bool error)
 {
 
     if (ftp_conn->currentCommand() != QFtp::RawCommand) pwd();
@@ -116,6 +135,8 @@ void Connection::ftpCommandFinished(int, bool error)
         //connectButton->setEnabled(true);
         return;
     }
+
+
 //![6]
 
 //![7]
@@ -154,7 +175,7 @@ void Connection::ftpCommandFinished(int, bool error)
     }
     */
     else if (ftp_conn->currentCommand() == QFtp::Mkdir) {
-        std::cout<<"created"<<std::endl;
+        std::cout<<"created"<<std::endl;        
         //ftp_conn->list();
     }
     else if (ftp_conn->currentCommand() == QFtp::List) {
@@ -169,7 +190,19 @@ void Connection::ftpCommandFinished(int, bool error)
     }
     else if (ftp_conn->currentCommand() == QFtp::Put || ftp_conn->currentCommand() == QFtp::Get) {
 
-       disconnect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), 0, SLOT(updateProgress(qint64,qint64)));
+
+        Command command;
+        for (int i = 0 ; i < doneQueue.size() ; i++)
+        {
+            command = doneQueue.at(i);
+            if (command.id == id)
+            {
+                disconnect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), command.itemToTransfer, SLOT(updateProgress(qint64,qint64)));
+                delete command.itemToTransfer;
+                doneQueue.removeAt(i);
+                break;
+            }
+        }
 
     }
 //![9]
@@ -210,9 +243,9 @@ void Connection::addItemToTransferQueue(TransferQueueItem * item) {
     transferQueue.append(item);
 }
 void Connection::queueChecked(QFtp * connection) {
-    if (!transferQueue.isEmpty()) {
-        TransferQueueItem * item = transferQueue.takeFirst();
+    while (!transferQueue.isEmpty()) {
+        TransferQueueItem * item = transferQueue.takeFirst();       
         startTransfer(connection,item);
-        queueChecked(connection);//takhle si kazdy blbec bude nacitat dokud to pujde ;-)
+        //queueChecked(connection);//takhle si kazdy blbec bude nacitat dokud to pujde ;-)
     }
 }

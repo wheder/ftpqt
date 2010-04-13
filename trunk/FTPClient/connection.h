@@ -13,6 +13,10 @@ namespace Ui {
 
 class Connection : public QDialog {
     Q_OBJECT
+    struct Command {
+        int id;
+        TransferQueueItem * itemToTransfer;
+    };
 public:
     Connection(QWidget *parent = 0);
     ~Connection();
@@ -29,11 +33,13 @@ private:
     Panel *panel;
     QString currentPathFTP;
     QQueue<TransferQueueItem *> transferQueue;
+    QQueue<Command> doneQueue;
     void startTransfer(QFtp * conn ,TransferQueueItem * itemToTransfer);
 
 private slots:
     void on_buttonBox_rejected();
     void on_buttonBox_accepted();
+    void ftpCommandStarted(int id);
     void ftpCommandFinished(int, bool error);
     void addToList(const QUrlInfo &urlInfo);
     void ftp_rawCommandReply( int code, const QString &text );
