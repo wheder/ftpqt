@@ -14,7 +14,7 @@ Connection::Connection(QWidget *parent) :
     panel = new Panel();
     panel->setFTPConn(&ftp_conn);
     connect(ui->anonymousConnection, SIGNAL(stateChanged(int)), this, SLOT(anonymousChanged(int)));
-
+    connect(panel, SIGNAL(newTransferQueueItemCreated(TransferQueueItem*)), this, SLOT(addItemToTransferQueue(TransferQueueItem*)));
 }
 
 Connection::~Connection()
@@ -50,7 +50,9 @@ void Connection::ftp_disconnect() {
     if (!ftp_conn) return;
     ftp_conn->abort();
     ftp_conn->deleteLater();
-    ftp_conn = NULL;    
+    ftp_conn = NULL;
+    panel->hide();
+    this->show();
 }
 void Connection::thisWantsTransfer(QFtp * conn ,TransferQueueItem & itemToTransfer){
 
@@ -93,7 +95,7 @@ void Connection::ftpCommandFinished(int, bool error)
             ftp_disconnect();
             return;
         }
-        ui->statusLabel->setText(tr("Logged onto %1.")
+        ui->statusLabel->setText(tr("Connected to %1.")
                              .arg(ui->serverAddress->text()));
 
 
@@ -109,6 +111,15 @@ void Connection::ftpCommandFinished(int, bool error)
 
 //![7]
     if (ftp_conn->currentCommand() == QFtp::Login) {
+        if (error) {
+            QMessageBox::information(this, tr("FTP"),
+                                     tr("Unable to login to the FTP server:<br />%1")
+                                     .arg(ftp_conn->errorString()));
+            ui->statusLabel->setText(tr("Disonnected from %1.")
+                                 .arg(ui->serverAddress->text()));
+            ftp_disconnect();
+            return;
+        }
         ftp_conn->list();
 
     }
@@ -180,4 +191,7 @@ void Connection::anonymousChanged(int newState) {
         ui->password->setEnabled(false);
         ui->user->setEnabled(false);
     }
+}
+void Connection::addItemToTransferQueue(TransferQueueItem * item) {
+    transferQueue.append(item);
 }
