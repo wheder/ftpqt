@@ -46,9 +46,21 @@ void TransferQueueItem::addChild(QObject * child){
     killUponDeath.append(child);
 
 }
+void TransferQueueItem::addProgress(QProgressBar * child){
+    killUponDeath.append(child);
+    m_progress = child;
+    connect(m_progress, SIGNAL(valueChanged(int)), this, SLOT(setComplete(int)));
+
+}
+QProgressBar * TransferQueueItem::getProgressBar() {
+    return m_progress;
+}
 TransferQueueItem::~TransferQueueItem(){
     while (!killUponDeath.isEmpty()) {
          delete killUponDeath.takeFirst();
     }
 }
 
+void TransferQueueItem::setComplete(int amoutn) {
+    m_sizeStart=amoutn;
+}

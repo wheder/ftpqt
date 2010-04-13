@@ -37,6 +37,7 @@ private slots:
     void addToList(const QUrlInfo &urlInfo);
     void ftp_rawCommandReply( int code, const QString &text );
     void thisWantsTransfer(QFtp * conn ,TransferQueueItem & itemToTransfer);
+    void anonymousChanged(int newState);
 
 signals:
     void pwdChanged(const QString &);

@@ -13,7 +13,7 @@ Connection::Connection(QWidget *parent) :
     ftp_conn = NULL;
     panel = new Panel();
     panel->setFTPConn(&ftp_conn);
-
+    connect(ui->anonymousConnection, SIGNAL(stateChanged(int)), this, SLOT(anonymousChanged(int)));
 
 }
 
@@ -170,4 +170,14 @@ void Connection::ftp_rawCommandReply( int code, const QString &text )
 
 void Connection::pwd() {
     ftp_conn->rawCommand("PWD");
+}
+void Connection::anonymousChanged(int newState) {
+    if (newState == Qt::Unchecked) {
+        ui->password->setEnabled(true);
+        ui->user->setEnabled(true);
+    }
+    else {
+        ui->password->setEnabled(false);
+        ui->user->setEnabled(false);
+    }
 }

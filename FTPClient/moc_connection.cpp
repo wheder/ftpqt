@@ -23,7 +23,7 @@ static const uint qt_meta_data_Connection[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-       7,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -40,6 +40,7 @@ static const uint qt_meta_data_Connection[] = {
      124,  116,   11,   11, 0x08,
      154,  144,   11,   11, 0x08,
      207,  187,   11,   11, 0x08,
+     260,  251,   11,   11, 0x08,
 
        0        // eod
 };
@@ -52,6 +53,7 @@ static const char qt_meta_stringdata_Connection[] = {
     "ftp_rawCommandReply(int,QString)\0"
     "conn,itemToTransfer\0"
     "thisWantsTransfer(QFtp*,TransferQueueItem&)\0"
+    "newState\0anonymousChanged(int)\0"
 };
 
 const QMetaObject Connection::staticMetaObject = {
@@ -90,9 +92,10 @@ int Connection::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 4: addToList((*reinterpret_cast< const QUrlInfo(*)>(_a[1]))); break;
         case 5: ftp_rawCommandReply((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
         case 6: thisWantsTransfer((*reinterpret_cast< QFtp*(*)>(_a[1])),(*reinterpret_cast< TransferQueueItem(*)>(_a[2]))); break;
+        case 7: anonymousChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 7;
+        _id -= 8;
     }
     return _id;
 }

@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'connection.ui'
 **
-** Created: Sat 10. Apr 16:07:13 2010
-**      by: Qt User Interface Compiler version 4.6.2
+** Created
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -74,6 +74,7 @@ public:
 
         user = new QLineEdit(Connection);
         user->setObjectName(QString::fromUtf8("user"));
+        user->setEnabled(false);
 
         formLayout->setWidget(2, QFormLayout::FieldRole, user);
 
@@ -84,6 +85,7 @@ public:
 
         password = new QLineEdit(Connection);
         password->setObjectName(QString::fromUtf8("password"));
+        password->setEnabled(false);
         password->setEchoMode(QLineEdit::Password);
 
         formLayout->setWidget(3, QFormLayout::FieldRole, password);
