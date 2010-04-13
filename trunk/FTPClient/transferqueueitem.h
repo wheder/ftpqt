@@ -25,8 +25,9 @@ public:
     void addProgress(QProgressBar * child);
 signals:
 
-public slots:
+private slots:
     void setComplete(int amoutn);
+    void updateProgress(qint64 current, qint64 total);
 
 private:
     bool m_download;
