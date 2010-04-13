@@ -23,7 +23,7 @@ static const uint qt_meta_data_Connection[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+       9,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -39,8 +39,9 @@ static const uint qt_meta_data_Connection[] = {
       87,   80,   11,   11, 0x08,
      124,  116,   11,   11, 0x08,
      154,  144,   11,   11, 0x08,
-     207,  187,   11,   11, 0x08,
-     260,  251,   11,   11, 0x08,
+     196,  187,   11,   11, 0x08,
+     223,  218,   11,   11, 0x08,
+     277,  266,   11,   11, 0x08,
 
        0        // eod
 };
@@ -51,9 +52,9 @@ static const char qt_meta_stringdata_Connection[] = {
     ",error\0ftpCommandFinished(int,bool)\0"
     "urlInfo\0addToList(QUrlInfo)\0code,text\0"
     "ftp_rawCommandReply(int,QString)\0"
-    "conn,itemToTransfer\0"
-    "thisWantsTransfer(QFtp*,TransferQueueItem&)\0"
-    "newState\0anonymousChanged(int)\0"
+    "newState\0anonymousChanged(int)\0item\0"
+    "addItemToTransferQueue(TransferQueueItem*)\0"
+    "connection\0queueChecked(QFtp*)\0"
 };
 
 const QMetaObject Connection::staticMetaObject = {
@@ -91,11 +92,12 @@ int Connection::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 3: ftpCommandFinished((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         case 4: addToList((*reinterpret_cast< const QUrlInfo(*)>(_a[1]))); break;
         case 5: ftp_rawCommandReply((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
-        case 6: thisWantsTransfer((*reinterpret_cast< QFtp*(*)>(_a[1])),(*reinterpret_cast< TransferQueueItem(*)>(_a[2]))); break;
-        case 7: anonymousChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 6: anonymousChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 7: addItemToTransferQueue((*reinterpret_cast< TransferQueueItem*(*)>(_a[1]))); break;
+        case 8: queueChecked((*reinterpret_cast< QFtp*(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 8;
+        _id -= 9;
     }
     return _id;
 }

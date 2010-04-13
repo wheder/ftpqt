@@ -23,7 +23,7 @@ static const uint qt_meta_data_TransferQueueItem[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   14, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,13 +31,15 @@ static const uint qt_meta_data_TransferQueueItem[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-      26,   19,   18,   18, 0x0a,
+      26,   19,   18,   18, 0x08,
+      57,   43,   18,   18, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_TransferQueueItem[] = {
     "TransferQueueItem\0\0amoutn\0setComplete(int)\0"
+    "current,total\0updateProgress(qint64,qint64)\0"
 };
 
 const QMetaObject TransferQueueItem::staticMetaObject = {
@@ -70,9 +72,10 @@ int TransferQueueItem::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: setComplete((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 1: updateProgress((*reinterpret_cast< qint64(*)>(_a[1])),(*reinterpret_cast< qint64(*)>(_a[2]))); break;
         default: ;
         }
-        _id -= 1;
+        _id -= 2;
     }
     return _id;
 }

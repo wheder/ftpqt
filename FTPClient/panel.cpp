@@ -208,7 +208,7 @@ void Panel::directoryStructureOnFtpCreated(bool error) {
 
 
 
-
+    connect((*ftp_con), SIGNAL(done(bool)), this, SLOT(startTransfers(bool)));
 }
 
 void Panel::on_uploadButton_clicked()
@@ -326,5 +326,9 @@ void Panel::uploadFile(QString local, QString ftp, QString file) {
 
 void Panel::changePwd(const QString & pwd) {
     ui->ftpPathLineEdit->setText(pwd);
+}
+void Panel::startTransfers(bool) {
+    disconnect((*ftp_con), SIGNAL(done(bool)), this, SLOT(startTransfers(bool)));
+    emit canTransfer((*ftp_con));
 }
 
