@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QList>
+#include <QProgressBar>
 
 class TransferQueueItem : public QObject
 {
@@ -17,13 +18,15 @@ public:
     QString getLocalDir();
     QString getFtpDir();
     QString getFileName();
+    QProgressBar * getProgressBar();
     bool shouldResume();
     qint64 bytesComplete();
     void addChild(QObject * child);
+    void addProgress(QProgressBar * child);
 signals:
 
 public slots:
-
+    void setComplete(int amoutn);
 
 private:
     bool m_download;
@@ -32,6 +35,7 @@ private:
     QString m_fileName;
     bool m_append;
     qint64 m_sizeStart;
+    QProgressBar *  m_progress;
     QList<QObject *> killUponDeath;
 };
 

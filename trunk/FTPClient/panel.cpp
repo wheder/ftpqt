@@ -232,6 +232,7 @@ void Panel::on_uploadButton_clicked()
     }
     //pokracovat se bude az se to plneni seznamu zklidni.
     connect((*ftp_con), SIGNAL(done(bool)), this, SLOT(directoryStructureOnFtpCreated(bool)));
+    (*ftp_con)->cd(".");
 }
 
 void Panel::uploadDir(QString local, QString ftp, QString dirname) {
@@ -299,7 +300,7 @@ void Panel::uploadFile(QString local, QString ftp, QString file) {
     ui->gridLayout_2->addWidget(l, level, 0, 1,1,0);
     item->addChild(l);
     ui->gridLayout_2->addWidget(p, level, 1, 1,1,0);
-    item->addChild(p);
+    item->addProgress(p);
     ui->gridLayout_2->addWidget(t, level, 2, 1,1,0);
     item->addChild(t);
 
