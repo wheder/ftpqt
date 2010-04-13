@@ -198,17 +198,28 @@ void Panel::on_deleteButton_clicked()
         (*ftp_con)->list();
     }    
 }
+void Panel::directoryStructureOnFtpCreated(bool error) {
+    disconnect((*ftp_con), SIGNAL(done(bool)), this, SLOT(directoryStructureOnFtpCreated(bool)));
+    ui->treeWidgetFTP->clear();
+    ui->treeWidgetFTP->setDisabled(false);
+    isDirFTP.clear();
+    (*ftp_con)->list();
+    ui->treeWidgetFTP->setDisabled(false);
 
+
+
+
+}
 
 void Panel::on_uploadButton_clicked()
 {
-std::cout << "Start"  << std::endl;
     if (!ui->treeWidgetLocal->currentItem())
     {
         QMessageBox::critical(this, tr("Error"), tr("No item available!"));
         return;
     }
-    //if (ui->treeWidgetLocal->selectedItems()
+    ui->treeWidgetFTP->setDisabled(true);
+
     QString fileName = ui->treeWidgetLocal->selectedItems().at(0)->text(0);  //->//currentItem()->text(0);
     if (isDirLocal.value(fileName)) {
         if (!isDirFTP.value(fileName)) {
@@ -219,32 +230,8 @@ std::cout << "Start"  << std::endl;
     else {
         uploadFile(currentPathLocal, ui->ftpPathLineEdit->text(), fileName);
     }
-    ui->treeWidgetFTP->clear();
-    isDirFTP.clear();
-    (*ftp_con)->list();
-return ;
-
-    QProgressBar * p = new QProgressBar(ui->scrollAreaWidgetContents);
-    p->setMaximum(200);
-    p->setValue(random());
-    //ui->formLayout->setWidget(0, QFormLayout::FieldRole, p);
-    //ui->formLayout->insertRow(0, p);
-    QLabel * l = new QLabel(ui->scrollAreaWidgetContents);
-    QTime time;
-    l->setText(tr("%1").arg(time.currentTime().toString(Qt::ISODate)));
-    //QMessageBox::information(this, tr("Info"), tr("%1").arg(time.toString(Qt::ISODate)));
-    //ui->formLayout->setWidget(0, QFormLayout::LabelRole, l);
-    //ui->formLayout->insertRow(0, l);
-    ui->formLayout->insertRow(0, l->text(), p);
-
-    //formLayout->setWidget(0, QFormLayout::LabelRole, label_3);
-    //formLayout->setWidget(0, QFormLayout::FieldRole, progressBar);
-    //p->
-    //ui->transferScrollArea->addScrollBarWidget(p, Qt::AlignLeft);
-    //if (!ui->treeWidgetLocal->isItemSelected()) QMessageBox::information(this, tr("No item selected!"));
-    //if (!ui->treeWidgetLocal->currentItem())QMessageBox::information(this, tr("Info"), tr("No item selected!"));
-    //QMessageBox::information(this, tr("Info"),  ui->treeWidgetLocal->currentItem()->text(0));
-
+    //pokracovat se bude az se to plneni seznamu zklidni.
+    connect((*ftp_con), SIGNAL(done(bool)), this, SLOT(directoryStructureOnFtpCreated(bool)));
 }
 
 void Panel::uploadDir(QString local, QString ftp, QString dirname) {
@@ -286,8 +273,56 @@ void Panel::uploadDir(QString local, QString ftp, QString dirname) {
 }
 void Panel::uploadFile(QString local, QString ftp, QString file) {
     //std::cout << "moving from: " << local.toStdString() << " to: " << ftp.toStdString() << " file:" << file.toStdString() << std::endl;
+    int fileSize = 0;
+    TransferQueueItem * item;
+    QHash<QString, bool>::const_iterator i = isDirFTP.find(file);
+    if (i == isDirFTP.end()) {//file neexistuje ;-)
+      item = new TransferQueueItem(false, local, ftp, file, false, 0, (*ftp_con));
+
+    }
+    else { //existuje, budeme appendovat :-/
+        QTreeWidgetItem * t = ui->treeWidgetFTP->findItems(file, Qt::MatchExactly, 0).first();
+        item = new TransferQueueItem(false, local, ftp, file, true, t->text(1).toInt(), (*ftp_con));
+        fileSize = t->text(1).toInt();
+    }
+    //if (isDirFTP.find())
+
+    QProgressBar * p = new QProgressBar(ui->scrollAreaWidgetContents);
+    p->setMaximum(QFile(local+file).size());
+    p->setValue(fileSize);
+    QLabel * l = new QLabel(ui->scrollAreaWidgetContents);
+    l->setText(file);
+    l->setToolTip(local+QString(" -> ")+ftp);
+    QPushButton * t = new QPushButton(QString("Cancel"), ui->scrollAreaWidgetContents);
+
+    int level = ui->scrollAreaWidgetContents->children().size()/3;
+    ui->gridLayout_2->addWidget(l, level, 0, 1,1,0);
+    item->addChild(l);
+    ui->gridLayout_2->addWidget(p, level, 1, 1,1,0);
+    item->addChild(p);
+    ui->gridLayout_2->addWidget(t, level, 2, 1,1,0);
+    item->addChild(t);
+
+    //QMessageBox::information(this, tr("Info"), tr("%1").arg(time.toString(Qt::ISODate)));
+    //ui->formLayout->setWidget(0, QFormLayout::LabelRole, l);
+    //ui->formLayout->insertRow(0, l);
+    //ui->gridLayout_2->insertRow(0, l->text(), p);
+
+    //formLayout->setWidget(0, QFormLayout::LabelRole, label_3);
+    //formLayout->setWidget(0, QFormLayout::FieldRole, progressBar);
+    //p->
+    //ui->transferScrollArea->addScrollBarWidget(p, Qt::AlignLeft);
+    //if (!ui->treeWidgetLocal->isItemSelected()) QMessageBox::information(this, tr("No item selected!"));
+    //if (!ui->treeWidgetLocal->currentItem())QMessageBox::information(this, tr("Info"), tr("No item selected!"));
+    //QMessageBox::information(this, tr("Info"),  ui->treeWidgetLocal->currentItem()->text(0));
+
+
+
+
+    std::cout << file.toStdString() << std::endl;
 }
 
 void Panel::changePwd(const QString & pwd) {
     ui->ftpPathLineEdit->setText(pwd);
 }
+

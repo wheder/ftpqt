@@ -6,9 +6,11 @@ TARGET = FTPClient
 TEMPLATE = app
 SOURCES += main.cpp \
     connection.cpp \
-    panel.cpp
+    panel.cpp \
+    transferqueueitem.cpp
 HEADERS += connection.h \
-    panel.h
+    panel.h \
+    transferqueueitem.h
 FORMS += connection.ui \
     panel.ui
 RESOURCES += ftpClient.qrc

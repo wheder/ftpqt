@@ -15,7 +15,7 @@
 #include <QInputDialog>
 #include <QProgressBar>
 #include <QTime>
-
+#include "transferqueueitem.h"
 
 
 namespace Ui {
@@ -53,6 +53,9 @@ private slots:
     void on_treeWidgetLocal_itemActivated(QTreeWidgetItem* item, int column);
     void changePwd(const QString & pwd);
     void on_cdUpLocal_clicked();
+    void directoryStructureOnFtpCreated(bool error);
+signals:
+    void canTransfer(QFtp * conn);
 };
 
 #endif // PANEL_H

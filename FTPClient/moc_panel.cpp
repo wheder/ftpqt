@@ -23,34 +23,40 @@ static const uint qt_meta_data_Panel[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-       8,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       0,       // signalCount
+       1,       // signalCount
+
+ // signals: signature, parameters, type, tag, flags
+      12,    7,    6,    6, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-       7,    6,    6,    6, 0x08,
-      33,    6,    6,    6, 0x08,
-      59,    6,    6,    6, 0x08,
-      85,    6,    6,    6, 0x08,
-     118,  106,    6,    6, 0x08,
-     171,  106,    6,    6, 0x08,
-     230,  226,    6,    6, 0x08,
-     249,    6,    6,    6, 0x08,
+      31,    6,    6,    6, 0x08,
+      57,    6,    6,    6, 0x08,
+      83,    6,    6,    6, 0x08,
+     109,    6,    6,    6, 0x08,
+     142,  130,    6,    6, 0x08,
+     195,  130,    6,    6, 0x08,
+     254,  250,    6,    6, 0x08,
+     273,    6,    6,    6, 0x08,
+     302,  296,    6,    6, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_Panel[] = {
-    "Panel\0\0on_uploadButton_clicked()\0"
+    "Panel\0\0conn\0canTransfer(QFtp*)\0"
+    "on_uploadButton_clicked()\0"
     "on_renameButton_clicked()\0"
     "on_deleteButton_clicked()\0"
     "on_cdUpFTP_clicked()\0item,column\0"
     "on_treeWidgetFTP_itemActivated(QTreeWidgetItem*,int)\0"
     "on_treeWidgetLocal_itemActivated(QTreeWidgetItem*,int)\0"
     "pwd\0changePwd(QString)\0on_cdUpLocal_clicked()\0"
+    "error\0directoryStructureOnFtpCreated(bool)\0"
 };
 
 const QMetaObject Panel::staticMetaObject = {
@@ -82,18 +88,27 @@ int Panel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: on_uploadButton_clicked(); break;
-        case 1: on_renameButton_clicked(); break;
-        case 2: on_deleteButton_clicked(); break;
-        case 3: on_cdUpFTP_clicked(); break;
-        case 4: on_treeWidgetFTP_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 5: on_treeWidgetLocal_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 6: changePwd((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 7: on_cdUpLocal_clicked(); break;
+        case 0: canTransfer((*reinterpret_cast< QFtp*(*)>(_a[1]))); break;
+        case 1: on_uploadButton_clicked(); break;
+        case 2: on_renameButton_clicked(); break;
+        case 3: on_deleteButton_clicked(); break;
+        case 4: on_cdUpFTP_clicked(); break;
+        case 5: on_treeWidgetFTP_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 6: on_treeWidgetLocal_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 7: changePwd((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 8: on_cdUpLocal_clicked(); break;
+        case 9: directoryStructureOnFtpCreated((*reinterpret_cast< bool(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 8;
+        _id -= 10;
     }
     return _id;
+}
+
+// SIGNAL 0
+void Panel::canTransfer(QFtp * _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_END_MOC_NAMESPACE
