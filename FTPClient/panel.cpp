@@ -303,6 +303,7 @@ void Panel::uploadFile(QString local, QString ftp, QString file) {
     item->addProgress(p);
     ui->gridLayout_2->addWidget(t, level, 2, 1,1,0);
     item->addChild(t);
+    emit newTransferQueueItemCreated(item);
 
     //QMessageBox::information(this, tr("Info"), tr("%1").arg(time.toString(Qt::ISODate)));
     //ui->formLayout->setWidget(0, QFormLayout::LabelRole, l);

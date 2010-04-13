@@ -28,7 +28,7 @@ private:
 
     Panel *panel;
     QString currentPathFTP;
-    QQueue<TransferQueueItem> transferQueue;
+    QQueue<TransferQueueItem *> transferQueue;
 
 private slots:
     void on_buttonBox_rejected();
@@ -38,6 +38,7 @@ private slots:
     void ftp_rawCommandReply( int code, const QString &text );
     void thisWantsTransfer(QFtp * conn ,TransferQueueItem & itemToTransfer);
     void anonymousChanged(int newState);
+    void addItemToTransferQueue(TransferQueueItem * item);
 
 signals:
     void pwdChanged(const QString &);

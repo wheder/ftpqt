@@ -50,6 +50,9 @@ public:
         if (Panel->objectName().isEmpty())
             Panel->setObjectName(QString::fromUtf8("Panel"));
         Panel->resize(928, 512);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/images/file.png"), QSize(), QIcon::Normal, QIcon::Off);
+        Panel->setWindowIcon(icon);
         gridLayout = new QGridLayout(Panel);
         gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
         label = new QLabel(Panel);

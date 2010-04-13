@@ -56,6 +56,7 @@ private slots:
     void directoryStructureOnFtpCreated(bool error);
 signals:
     void canTransfer(QFtp * conn);
+    void newTransferQueueItemCreated(TransferQueueItem * i);
 };
 
 #endif // PANEL_H

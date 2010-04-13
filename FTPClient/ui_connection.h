@@ -37,15 +37,18 @@ public:
     QLabel *label_3;
     QLineEdit *password;
     QLabel *label_4;
-    QSpinBox *spinBox;
     QDialogButtonBox *buttonBox;
     QLabel *statusLabel;
+    QSpinBox *spinBox;
 
     void setupUi(QDialog *Connection)
     {
         if (Connection->objectName().isEmpty())
             Connection->setObjectName(QString::fromUtf8("Connection"));
         Connection->resize(330, 215);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8(":/images/dir.png"), QSize(), QIcon::Normal, QIcon::Off);
+        Connection->setWindowIcon(icon);
         formLayout = new QFormLayout(Connection);
         formLayout->setSpacing(6);
         formLayout->setContentsMargins(11, 11, 11, 11);
@@ -95,12 +98,6 @@ public:
 
         formLayout->setWidget(7, QFormLayout::LabelRole, label_4);
 
-        spinBox = new QSpinBox(Connection);
-        spinBox->setObjectName(QString::fromUtf8("spinBox"));
-        spinBox->setMinimum(1);
-
-        formLayout->setWidget(7, QFormLayout::FieldRole, spinBox);
-
         buttonBox = new QDialogButtonBox(Connection);
         buttonBox->setObjectName(QString::fromUtf8("buttonBox"));
         buttonBox->setStandardButtons(QDialogButtonBox::Close|QDialogButtonBox::Ok);
@@ -113,6 +110,18 @@ public:
 
         formLayout->setWidget(10, QFormLayout::SpanningRole, statusLabel);
 
+        spinBox = new QSpinBox(Connection);
+        spinBox->setObjectName(QString::fromUtf8("spinBox"));
+        QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(spinBox->sizePolicy().hasHeightForWidth());
+        spinBox->setSizePolicy(sizePolicy);
+        spinBox->setWrapping(false);
+        spinBox->setMinimum(1);
+
+        formLayout->setWidget(7, QFormLayout::FieldRole, spinBox);
+
 
         retranslateUi(Connection);
 
@@ -123,10 +132,10 @@ public:
     {
         Connection->setWindowTitle(QApplication::translate("Connection", "Connection", 0, QApplication::UnicodeUTF8));
         label->setText(QApplication::translate("Connection", "Server:", 0, QApplication::UnicodeUTF8));
-        anonymousConnection->setText(QApplication::translate("Connection", "Anonymn\303\255", 0, QApplication::UnicodeUTF8));
-        label_2->setText(QApplication::translate("Connection", "U\305\276ivatel:", 0, QApplication::UnicodeUTF8));
-        label_3->setText(QApplication::translate("Connection", "Heslo", 0, QApplication::UnicodeUTF8));
-        label_4->setText(QApplication::translate("Connection", "Maximum spojen\303\255", 0, QApplication::UnicodeUTF8));
+        anonymousConnection->setText(QApplication::translate("Connection", "Anonymous", 0, QApplication::UnicodeUTF8));
+        label_2->setText(QApplication::translate("Connection", "User:", 0, QApplication::UnicodeUTF8));
+        label_3->setText(QApplication::translate("Connection", "Password:", 0, QApplication::UnicodeUTF8));
+        label_4->setText(QApplication::translate("Connection", "Maximum connections:", 0, QApplication::UnicodeUTF8));
         statusLabel->setText(QString());
     } // retranslateUi
 
