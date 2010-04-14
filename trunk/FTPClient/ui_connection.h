@@ -1,8 +1,8 @@
 /********************************************************************************
 ** Form generated from reading UI file 'connection.ui'
 **
-** Created: Wed 14. Apr 22:52:12 2010
-**      by: Qt User Interface Compiler version 4.6.2
+** Created
+**      by: Qt User Interface Compiler version 4.6.3
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -39,7 +39,7 @@ public:
     QLabel *label_4;
     QDialogButtonBox *buttonBox;
     QLabel *statusLabel;
-    QSpinBox *spinBox;
+    QSpinBox *maxConnections;
 
     void setupUi(QDialog *Connection)
     {
@@ -110,17 +110,17 @@ public:
 
         formLayout->setWidget(10, QFormLayout::SpanningRole, statusLabel);
 
-        spinBox = new QSpinBox(Connection);
-        spinBox->setObjectName(QString::fromUtf8("spinBox"));
+        maxConnections = new QSpinBox(Connection);
+        maxConnections->setObjectName(QString::fromUtf8("maxConnections"));
         QSizePolicy sizePolicy(QSizePolicy::Maximum, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
         sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(spinBox->sizePolicy().hasHeightForWidth());
-        spinBox->setSizePolicy(sizePolicy);
-        spinBox->setWrapping(false);
-        spinBox->setMinimum(1);
+        sizePolicy.setHeightForWidth(maxConnections->sizePolicy().hasHeightForWidth());
+        maxConnections->setSizePolicy(sizePolicy);
+        maxConnections->setWrapping(false);
+        maxConnections->setMinimum(1);
 
-        formLayout->setWidget(7, QFormLayout::FieldRole, spinBox);
+        formLayout->setWidget(7, QFormLayout::FieldRole, maxConnections);
 
 
         retranslateUi(Connection);

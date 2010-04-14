@@ -89,3 +89,6 @@ void TransferQueueItem::connectFtp(QFtp * conn) {
     m_conn = conn;
     connect(m_conn, SIGNAL(dataTransferProgress(qint64,qint64)), this, SLOT(updateProgress(qint64,qint64)));
 }
+QFtp * TransferQueueItem::conn() {
+    return m_conn;
+}

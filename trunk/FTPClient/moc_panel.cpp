@@ -23,7 +23,7 @@ static const uint qt_meta_data_Panel[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-      12,   14, // methods
+      13,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -45,6 +45,7 @@ static const uint qt_meta_data_Panel[] = {
      323,    6,    6,    6, 0x08,
      352,  346,    6,    6, 0x08,
      391,  389,    6,    6, 0x08,
+     412,  346,    6,    6, 0x08,
 
        0        // eod
 };
@@ -60,7 +61,7 @@ static const char qt_meta_stringdata_Panel[] = {
     "on_treeWidgetLocal_itemActivated(QTreeWidgetItem*,int)\0"
     "pwd\0changePwd(QString)\0on_cdUpLocal_clicked()\0"
     "error\0directoryStructureOnFtpCreated(bool)\0"
-    "a\0startTransfers(bool)\0"
+    "a\0startTransfers(bool)\0filesOnFTPDeleted(bool)\0"
 };
 
 const QMetaObject Panel::staticMetaObject = {
@@ -104,9 +105,10 @@ int Panel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 9: on_cdUpLocal_clicked(); break;
         case 10: directoryStructureOnFtpCreated((*reinterpret_cast< bool(*)>(_a[1]))); break;
         case 11: startTransfers((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 12: filesOnFTPDeleted((*reinterpret_cast< bool(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 12;
+        _id -= 13;
     }
     return _id;
 }
