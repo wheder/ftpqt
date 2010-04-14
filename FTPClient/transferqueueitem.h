@@ -23,8 +23,6 @@ public:
     qint64 bytesComplete();
     void addChild(QObject * child);
     void addProgress(QProgressBar * child);
-    void setId(int id);
-    int getId();
 signals:
 
 private slots:
@@ -32,7 +30,6 @@ private slots:
     void updateProgress(qint64 current, qint64 total);
 
 private:
-    int id;
     bool m_download;
     QString m_localDir;
     QString m_ftpDir;

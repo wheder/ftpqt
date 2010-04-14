@@ -69,13 +69,3 @@ void TransferQueueItem::updateProgress(qint64 current, qint64 total) {
     m_progress->setValue(current);
     m_progress->setMaximum(total);
 }
-
-void TransferQueueItem::setId(int id)
-{
-    this->id = id;
-}
-
-int TransferQueueItem::getId()
-{
-    return this->id;
-}
