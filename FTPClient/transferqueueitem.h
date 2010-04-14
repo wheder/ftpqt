@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QList>
+#include <QFtp>
 #include <QProgressBar>
 
 class TransferQueueItem : public QObject
@@ -25,6 +26,7 @@ public:
     void addProgress(QProgressBar * child);
     void setId(int id);
     int getId();
+    void connectFtp(QFtp * conn);
 signals:
 
 private slots:
@@ -41,6 +43,9 @@ private:
     qint64 m_sizeStart;
     QProgressBar *  m_progress;
     QList<QObject *> killUponDeath;
+
+    QFtp * m_conn;
+
 };
 
 #endif // TRANSFERQUEUEITEM_H

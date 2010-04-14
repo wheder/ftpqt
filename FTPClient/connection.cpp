@@ -95,7 +95,7 @@ void Connection::ftpCommandStarted(int id)
         {            
             if (id == pendingQueue.at(i)->getId())
             {
-                connect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), pendingQueue.at(i), SLOT(updateProgress(qint64,qint64)));
+                pendingQueue.at(i)->connectFtp(ftp_conn);
                 break;
             }
         }
@@ -195,7 +195,6 @@ void Connection::ftpCommandFinished(int id, bool error)
 
             if (id == pendingQueue.at(i)->getId())
             {
-                disconnect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), pendingQueue.at(i), SLOT(updateProgress(qint64,qint64)));
                 delete pendingQueue.at(i);
                 pendingQueue.removeAt(i);
                 break;
