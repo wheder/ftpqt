@@ -23,7 +23,7 @@ static const uint qt_meta_data_Connection[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -36,12 +36,13 @@ static const uint qt_meta_data_Connection[] = {
  // slots: signature, parameters, type, tag, flags
       32,   11,   11,   11, 0x08,
       56,   11,   11,   11, 0x08,
-      87,   80,   11,   11, 0x08,
-     124,  116,   11,   11, 0x08,
-     154,  144,   11,   11, 0x08,
-     196,  187,   11,   11, 0x08,
-     223,  218,   11,   11, 0x08,
-     277,  266,   11,   11, 0x08,
+      83,   80,   11,   11, 0x08,
+     113,  106,   11,   11, 0x08,
+     150,  142,   11,   11, 0x08,
+     180,  170,   11,   11, 0x08,
+     222,  213,   11,   11, 0x08,
+     249,  244,   11,   11, 0x08,
+     303,  292,   11,   11, 0x08,
 
        0        // eod
 };
@@ -49,8 +50,9 @@ static const uint qt_meta_data_Connection[] = {
 static const char qt_meta_stringdata_Connection[] = {
     "Connection\0\0pwdChanged(QString)\0"
     "on_buttonBox_rejected()\0on_buttonBox_accepted()\0"
-    ",error\0ftpCommandFinished(int,bool)\0"
-    "urlInfo\0addToList(QUrlInfo)\0code,text\0"
+    "id\0ftpCommandStarted(int)\0,error\0"
+    "ftpCommandFinished(int,bool)\0urlInfo\0"
+    "addToList(QUrlInfo)\0code,text\0"
     "ftp_rawCommandReply(int,QString)\0"
     "newState\0anonymousChanged(int)\0item\0"
     "addItemToTransferQueue(TransferQueueItem*)\0"
@@ -89,15 +91,16 @@ int Connection::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 0: pwdChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 1: on_buttonBox_rejected(); break;
         case 2: on_buttonBox_accepted(); break;
-        case 3: ftpCommandFinished((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 4: addToList((*reinterpret_cast< const QUrlInfo(*)>(_a[1]))); break;
-        case 5: ftp_rawCommandReply((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
-        case 6: anonymousChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 7: addItemToTransferQueue((*reinterpret_cast< TransferQueueItem*(*)>(_a[1]))); break;
-        case 8: queueChecked((*reinterpret_cast< QFtp*(*)>(_a[1]))); break;
+        case 3: ftpCommandStarted((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 4: ftpCommandFinished((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 5: addToList((*reinterpret_cast< const QUrlInfo(*)>(_a[1]))); break;
+        case 6: ftp_rawCommandReply((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 7: anonymousChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 8: addItemToTransferQueue((*reinterpret_cast< TransferQueueItem*(*)>(_a[1]))); break;
+        case 9: queueChecked((*reinterpret_cast< QFtp*(*)>(_a[1]))); break;
         default: ;
         }
-        _id -= 9;
+        _id -= 10;
     }
     return _id;
 }

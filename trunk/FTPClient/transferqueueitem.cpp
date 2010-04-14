@@ -13,6 +13,7 @@ TransferQueueItem::TransferQueueItem(bool download, QString localDir, QString ft
     m_fileName= fileName;
     m_append=append;
     m_sizeStart=sizeStart;
+    m_conn = NULL;
 }
 TransferQueueItem::TransferQueueItem(bool download, QString localDir, QString ftpDir, QString fileName, bool append, qint64 sizeStart, QObject * parent) :
     QObject(parent)
@@ -23,6 +24,7 @@ TransferQueueItem::TransferQueueItem(bool download, QString localDir, QString ft
     m_fileName= fileName;
     m_append=append;
     m_sizeStart=sizeStart;
+    m_conn = NULL;
 }
 bool TransferQueueItem::isDownload() {
     return m_download;
@@ -59,6 +61,10 @@ TransferQueueItem::~TransferQueueItem(){
     while (!killUponDeath.isEmpty()) {
          delete killUponDeath.takeFirst();
     }
+    if (m_conn != NULL) {
+        disconnect(m_conn, SIGNAL(dataTransferProgress(qint64,qint64)), this, SLOT(updateProgress(qint64,qint64)));
+        m_conn = NULL;
+    }
 }
 
 void TransferQueueItem::setComplete(int amoutn) {
@@ -78,4 +84,8 @@ void TransferQueueItem::setId(int id)
 int TransferQueueItem::getId()
 {
     return id;
+}
+void TransferQueueItem::connectFtp(QFtp * conn) {
+    m_conn = conn;
+    connect(m_conn, SIGNAL(dataTransferProgress(qint64,qint64)), this, SLOT(updateProgress(qint64,qint64)));
 }
