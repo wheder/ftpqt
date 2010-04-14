@@ -16,6 +16,7 @@
 #include <QProgressBar>
 #include <QTime>
 #include "transferqueueitem.h"
+#include "qxftp.h"
 
 
 namespace Ui {
@@ -29,7 +30,7 @@ public:
     ~Panel();
     void addItemFTP(const QUrlInfo &urlInfo);
     void addItemLocal();
-    void setFTPConn(QFtp **ftp);
+    void setFTPConn(QxFtp **ftp);
 protected:
     void changeEvent(QEvent *e);
 
@@ -39,7 +40,7 @@ private:
     QString currentPathLocal, rootDirToDelete;
     QHash<QString, bool> isDirFTP;
     QString currentPathFTP;
-    QFtp **ftp_con;
+    QxFtp **ftp_con;
     bool localPanelActive;
     void uploadDir(QString local, QString ftp, QString dirname);
     void uploadFile(QString local, QString ftp, QString file);
@@ -53,12 +54,12 @@ private slots:
     void on_treeWidgetLocal_itemActivated(QTreeWidgetItem* item, int column);
     void changePwd(const QString & pwd);
     void on_cdUpLocal_clicked();
-    void directoryStructureOnFtpCreated(bool error);
-    void startTransfers(bool a);
-    void filesOnFTPDeleted(bool error);
-    void dirsOnFTPDeleted(bool error);
+    void directoryStructureOnFtpCreated(QxFtp *, bool error);
+    void startTransfers(QxFtp *, bool a);
+    void filesOnFTPDeleted(QxFtp *, bool error);
+    void dirsOnFTPDeleted(QxFtp *,bool error);
 signals:
-    void canTransfer(QFtp * conn);
+    void canTransfer(QxFtp * conn);
     void newTransferQueueItemCreated(TransferQueueItem * i);
 };
 

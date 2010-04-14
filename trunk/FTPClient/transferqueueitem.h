@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QList>
-#include <QFtp>
+#include "qxftp.h"
 #include <QProgressBar>
 
 class TransferQueueItem : public QObject
@@ -26,13 +26,13 @@ public:
     void addProgress(QProgressBar * child);
     void setId(int id);
     int getId();
-    void connectFtp(QFtp * conn);
-    QFtp * conn();
+    void connectFtp(QxFtp * conn);
+    QxFtp * conn();
 signals:
 
 private slots:
     void setComplete(int amoutn);
-    void updateProgress(qint64 current, qint64 total);
+    void updateProgress(QxFtp *, qint64 current, qint64 total);
 
 private:
     int id;
@@ -45,7 +45,7 @@ private:
     QProgressBar *  m_progress;
     QList<QObject *> killUponDeath;
 
-    QFtp * m_conn;
+    QxFtp * m_conn;
 
 };
 

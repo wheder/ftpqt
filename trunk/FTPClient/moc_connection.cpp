@@ -35,30 +35,30 @@ static const uint qt_meta_data_Connection[] = {
       32,   11,   11,   11, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      51,   11,   11,   11, 0x08,
-      75,   11,   11,   11, 0x08,
-     102,   99,   11,   11, 0x08,
-     132,  125,   11,   11, 0x08,
-     169,  161,   11,   11, 0x08,
-     199,  189,   11,   11, 0x08,
-     241,  232,   11,   11, 0x08,
-     268,  263,   11,   11, 0x08,
-     322,  311,   11,   11, 0x08,
+      52,   11,   11,   11, 0x08,
+      76,   11,   11,   11, 0x08,
+     104,  100,   11,   11, 0x08,
+     142,  134,   11,   11, 0x08,
+     187,  178,   11,   11, 0x08,
+     225,  214,   11,   11, 0x08,
+     274,  265,   11,   11, 0x08,
+     301,  296,   11,   11, 0x08,
+     355,  344,   11,   11, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_Connection[] = {
     "Connection\0\0pwdChanged(QString)\0"
-    "canTransfer(QFtp*)\0on_buttonBox_rejected()\0"
-    "on_buttonBox_accepted()\0id\0"
-    "ftpCommandStarted(int)\0,error\0"
-    "ftpCommandFinished(int,bool)\0urlInfo\0"
-    "addToList(QUrlInfo)\0code,text\0"
-    "ftp_rawCommandReply(int,QString)\0"
+    "canTransfer(QxFtp*)\0on_buttonBox_rejected()\0"
+    "on_buttonBox_accepted()\0,id\0"
+    "ftpCommandStarted(QxFtp*,int)\0,,error\0"
+    "ftpCommandFinished(QxFtp*,int,bool)\0"
+    ",urlInfo\0addToList(QxFtp*,QUrlInfo)\0"
+    ",code,text\0ftp_rawCommandReply(QxFtp*,int,QString)\0"
     "newState\0anonymousChanged(int)\0item\0"
     "addItemToTransferQueue(TransferQueueItem*)\0"
-    "connection\0queueChecked(QFtp*)\0"
+    "connection\0queueChecked(QxFtp*)\0"
 };
 
 const QMetaObject Connection::staticMetaObject = {
@@ -91,16 +91,16 @@ int Connection::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: pwdChanged((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 1: canTransfer((*reinterpret_cast< QFtp*(*)>(_a[1]))); break;
+        case 1: canTransfer((*reinterpret_cast< QxFtp*(*)>(_a[1]))); break;
         case 2: on_buttonBox_rejected(); break;
         case 3: on_buttonBox_accepted(); break;
-        case 4: ftpCommandStarted((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 5: ftpCommandFinished((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 6: addToList((*reinterpret_cast< const QUrlInfo(*)>(_a[1]))); break;
-        case 7: ftp_rawCommandReply((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 4: ftpCommandStarted((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 5: ftpCommandFinished((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< bool(*)>(_a[3]))); break;
+        case 6: addToList((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< const QUrlInfo(*)>(_a[2]))); break;
+        case 7: ftp_rawCommandReply((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2])),(*reinterpret_cast< const QString(*)>(_a[3]))); break;
         case 8: anonymousChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 9: addItemToTransferQueue((*reinterpret_cast< TransferQueueItem*(*)>(_a[1]))); break;
-        case 10: queueChecked((*reinterpret_cast< QFtp*(*)>(_a[1]))); break;
+        case 10: queueChecked((*reinterpret_cast< QxFtp*(*)>(_a[1]))); break;
         default: ;
         }
         _id -= 11;
@@ -116,7 +116,7 @@ void Connection::pwdChanged(const QString & _t1)
 }
 
 // SIGNAL 1
-void Connection::canTransfer(QFtp * _t1)
+void Connection::canTransfer(QxFtp * _t1)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 1, _a);

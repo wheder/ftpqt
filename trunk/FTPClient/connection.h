@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QtNetwork>
 #include "panel.h"
+#include "qxftp.h"
 #include <QQueue>
 #include "transferqueueitem.h"
 
@@ -20,7 +21,7 @@ class Connection : public QDialog {
 public:
     Connection(QWidget *parent = 0);
     ~Connection();
-    QFtp *ftp_conn;
+    QxFtp *ftp_conn;
     void pwd();
 protected:
     void changeEvent(QEvent *e);
@@ -34,25 +35,25 @@ private:
     QString currentPathFTP;
     QQueue<TransferQueueItem *> transferQueue;
     QQueue<TransferQueueItem *> pendingQueue;
-    void startTransfer(QFtp * conn ,TransferQueueItem * itemToTransfer);
-    QList<QFtp *> all_connections;
+    void startTransfer(QxFtp * conn ,TransferQueueItem * itemToTransfer);
+    QList<QxFtp *> all_connections;
     void setupTransfers();
     int max_connections;
 
 private slots:
     void on_buttonBox_rejected();
     void on_buttonBox_accepted();
-    void ftpCommandStarted(int id);
-    void ftpCommandFinished(int, bool error);
-    void addToList(const QUrlInfo &urlInfo);
-    void ftp_rawCommandReply( int code, const QString &text );
+    void ftpCommandStarted(QxFtp *, int id);
+    void ftpCommandFinished(QxFtp *, int, bool error);
+    void addToList(QxFtp *, const QUrlInfo &urlInfo);
+    void ftp_rawCommandReply( QxFtp *, int code, const QString &text );
     void anonymousChanged(int newState);
     void addItemToTransferQueue(TransferQueueItem * item);
-    void queueChecked(QFtp * connection);
+    void queueChecked(QxFtp * connection);
 
 signals:
     void pwdChanged(const QString &);
-    void canTransfer(QFtp*);
+    void canTransfer(QxFtp*);
 };
 
 #endif // CONNECTION_H
