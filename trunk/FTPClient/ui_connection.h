@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'connection.ui'
 **
-** Created: Wed 14. Apr 23:42:11 2010
+** Created: Thu 15. Apr 00:12:50 2010
 **      by: Qt User Interface Compiler version 4.6.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
