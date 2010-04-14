@@ -33,7 +33,7 @@ private:
     Panel *panel;
     QString currentPathFTP;
     QQueue<TransferQueueItem *> transferQueue;
-    QQueue<Command> doneQueue;
+    QQueue<TransferQueueItem *> pendingQueue;
     void startTransfer(QFtp * conn ,TransferQueueItem * itemToTransfer);
 
 private slots:

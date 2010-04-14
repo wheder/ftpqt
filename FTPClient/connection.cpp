@@ -62,11 +62,10 @@ void Connection::startTransfer(QFtp * conn ,TransferQueueItem * itemToTransfer){
         QMessageBox::critical(this, tr("Error"), tr("Cannot open file '%1' for reading!").arg(itemToTransfer->getFileName()));
         return;
     }
-    Command command;
 
-    command.id = conn->put(file, itemToTransfer->getFtpDir()+QString("/")+itemToTransfer->getFileName());
-    command.itemToTransfer = itemToTransfer;
-    doneQueue.append(command);
+
+    itemToTransfer->setId(conn->put(file, itemToTransfer->getFtpDir()+QString("/")+itemToTransfer->getFileName()));
+    pendingQueue.append(itemToTransfer);
 
 }
 
@@ -91,13 +90,12 @@ void Connection::ftp_connect() {
 void Connection::ftpCommandStarted(int id)
 {
     if (ftp_conn->currentCommand() == QFtp::Put) {
-        Command command;
-        for (int i = 0 ; i < doneQueue.size() ; i++)
-        {
-            command = doneQueue.at(i);
-            if (command.id == id)
+
+        for (int i = 0 ; i < pendingQueue.size() ; i++)
+        {            
+            if (id == pendingQueue.at(i)->getId())
             {
-                connect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), command.itemToTransfer, SLOT(updateProgress(qint64,qint64)));
+                connect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), pendingQueue.at(i), SLOT(updateProgress(qint64,qint64)));
                 break;
             }
         }
@@ -191,15 +189,15 @@ void Connection::ftpCommandFinished(int id, bool error)
     else if (ftp_conn->currentCommand() == QFtp::Put || ftp_conn->currentCommand() == QFtp::Get) {
 
 
-        Command command;
-        for (int i = 0 ; i < doneQueue.size() ; i++)
+
+        for (int i = 0 ; i < pendingQueue.size() ; i++)
         {
-            command = doneQueue.at(i);
-            if (command.id == id)
+
+            if (id == pendingQueue.at(i)->getId())
             {
-                disconnect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), command.itemToTransfer, SLOT(updateProgress(qint64,qint64)));
-                delete command.itemToTransfer;
-                doneQueue.removeAt(i);
+                disconnect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), pendingQueue.at(i), SLOT(updateProgress(qint64,qint64)));
+                delete pendingQueue.at(i);
+                pendingQueue.removeAt(i);
                 break;
             }
         }
