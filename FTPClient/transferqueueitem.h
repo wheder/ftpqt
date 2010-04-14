@@ -27,6 +27,7 @@ public:
     void setId(int id);
     int getId();
     void connectFtp(QFtp * conn);
+    QFtp * conn();
 signals:
 
 private slots:

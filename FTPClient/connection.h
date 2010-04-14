@@ -35,6 +35,9 @@ private:
     QQueue<TransferQueueItem *> transferQueue;
     QQueue<TransferQueueItem *> pendingQueue;
     void startTransfer(QFtp * conn ,TransferQueueItem * itemToTransfer);
+    QList<QFtp *> all_connections;
+    void setupTransfers();
+    int max_connections;
 
 private slots:
     void on_buttonBox_rejected();
@@ -49,6 +52,7 @@ private slots:
 
 signals:
     void pwdChanged(const QString &);
+    void canTransfer(QFtp*);
 };
 
 #endif // CONNECTION_H
