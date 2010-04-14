@@ -36,7 +36,7 @@ protected:
 private:
     Ui::Panel *ui;
     QHash<QString, bool> isDirLocal;
-    QString currentPathLocal;
+    QString currentPathLocal, rootDirToDelete;
     QHash<QString, bool> isDirFTP;
     QString currentPathFTP;
     QFtp **ftp_con;
@@ -56,6 +56,7 @@ private slots:
     void directoryStructureOnFtpCreated(bool error);
     void startTransfers(bool a);
     void filesOnFTPDeleted(bool error);
+    void dirsOnFTPDeleted(bool error);
 signals:
     void canTransfer(QFtp * conn);
     void newTransferQueueItemCreated(TransferQueueItem * i);
