@@ -13,12 +13,9 @@ Connection::Connection(QWidget *parent) :
     ftp_conn = NULL;
     panel = new Panel();
     panel->setFTPConn(&ftp_conn);
-    pendingQueue = new QQueue<TransferQueueItem *>;
     connect(ui->anonymousConnection, SIGNAL(stateChanged(int)), this, SLOT(anonymousChanged(int)));
     connect(panel, SIGNAL(newTransferQueueItemCreated(TransferQueueItem*)), this, SLOT(addItemToTransferQueue(TransferQueueItem*)));
-
     connect(panel, SIGNAL(canTransfer(QFtp*)), this, SLOT(queueChecked(QFtp*)));
-
 }
 
 Connection::~Connection()
@@ -58,9 +55,8 @@ void Connection::ftp_disconnect() {
     panel->hide();
     this->show();
 }
-void Connection::startUpload(QFtp * conn ,TransferQueueItem * itemToTransfer){
+void Connection::startTransfer(QFtp * conn ,TransferQueueItem * itemToTransfer){
 
-    /*
     QFile * file = new QFile(itemToTransfer->getLocalDir()+QString("/")+itemToTransfer->getFileName());
     if (!file->open(QIODevice::ReadOnly)) {
         QMessageBox::critical(this, tr("Error"), tr("Cannot open file '%1' for reading!").arg(itemToTransfer->getFileName()));
@@ -70,8 +66,7 @@ void Connection::startUpload(QFtp * conn ,TransferQueueItem * itemToTransfer){
 
     command.id = conn->put(file, itemToTransfer->getFtpDir()+QString("/")+itemToTransfer->getFileName());
     command.itemToTransfer = itemToTransfer;
-    pendingQueue->append(command);
-    */
+    doneQueue.append(command);
 
 }
 
@@ -96,13 +91,13 @@ void Connection::ftp_connect() {
 void Connection::ftpCommandStarted(int id)
 {
     if (ftp_conn->currentCommand() == QFtp::Put) {
-        TransferQueueItem * item;
-        for (int i = 0 ; i < pendingQueue->size() ; i++)
+        Command command;
+        for (int i = 0 ; i < doneQueue.size() ; i++)
         {
-            item = pendingQueue->at(i);
-            if (item->getId() == id)
+            command = doneQueue.at(i);
+            if (command.id == id)
             {
-                connect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), item, SLOT(updateProgress(qint64,qint64)));
+                connect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), command.itemToTransfer, SLOT(updateProgress(qint64,qint64)));
                 break;
             }
         }
@@ -196,22 +191,20 @@ void Connection::ftpCommandFinished(int id, bool error)
     else if (ftp_conn->currentCommand() == QFtp::Put || ftp_conn->currentCommand() == QFtp::Get) {
 
 
-
-        TransferQueueItem * item;
-        for (int i = 0 ; i < pendingQueue->size() ; i++)
+        Command command;
+        for (int i = 0 ; i < doneQueue.size() ; i++)
         {
-            item = pendingQueue->at(i);
-            if (item->getId() == id)
+            command = doneQueue.at(i);
+            if (command.id == id)
             {
-                disconnect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), item, SLOT(updateProgress(qint64,qint64)));
-                delete item;
-                pendingQueue->removeAt(i);
+                disconnect(ftp_conn, SIGNAL(dataTransferProgress(qint64,qint64)), command.itemToTransfer, SLOT(updateProgress(qint64,qint64)));
+                delete command.itemToTransfer;
+                doneQueue.removeAt(i);
                 break;
             }
         }
+
     }
-
-
 //![9]
 
 }
@@ -250,22 +243,9 @@ void Connection::addItemToTransferQueue(TransferQueueItem * item) {
     transferQueue.append(item);
 }
 void Connection::queueChecked(QFtp * connection) {
-
-    if (!transferQueue.isEmpty()) {
-        TransferQueueItem * item = transferQueue.takeFirst();
-        UploadThread * upThread = new UploadThread;
-        connect(upThread, SIGNAL(newPendingItem(TransferQueueItem*)), this, SLOT(addPendingItem(TransferQueueItem*)));
-        upThread->setConnection(connection);
-        upThread->setTransferItem(item);
-
-        upThread->start();
-
-        //startUpload(connection,item);
-        queueChecked(connection);//takhle si kazdy blbec bude nacitat dokud to pujde ;-)
+    while (!transferQueue.isEmpty()) {
+        TransferQueueItem * item = transferQueue.takeFirst();       
+        startTransfer(connection,item);
+        //queueChecked(connection);//takhle si kazdy blbec bude nacitat dokud to pujde ;-)
     }
-}
-
-void Connection::addPendingItem(TransferQueueItem *item)
-{
-    pendingQueue->append(item);
 }

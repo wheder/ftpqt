@@ -7,12 +7,10 @@ TEMPLATE = app
 SOURCES += main.cpp \
     connection.cpp \
     panel.cpp \
-    transferqueueitem.cpp \
-    uploadthread.cpp
+    transferqueueitem.cpp
 HEADERS += connection.h \
     panel.h \
-    transferqueueitem.h \
-    uploadthread.h
+    transferqueueitem.h
 FORMS += connection.ui \
     panel.ui
 RESOURCES += ftpClient.qrc
