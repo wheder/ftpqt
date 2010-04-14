@@ -6,6 +6,7 @@
 #include "panel.h"
 #include <QQueue>
 #include "transferqueueitem.h"
+#include "uploadthread.h"
 
 namespace Ui {
     class Connection;
@@ -13,11 +14,9 @@ namespace Ui {
 
 class Connection : public QDialog {
     Q_OBJECT
-    struct Command {
-        int id;
-        TransferQueueItem * itemToTransfer;
-    };
+
 public:
+
     Connection(QWidget *parent = 0);
     ~Connection();
     QFtp *ftp_conn;
@@ -33,8 +32,8 @@ private:
     Panel *panel;
     QString currentPathFTP;
     QQueue<TransferQueueItem *> transferQueue;
-    QQueue<Command> doneQueue;
-    void startTransfer(QFtp * conn ,TransferQueueItem * itemToTransfer);
+    QQueue<TransferQueueItem *> * pendingQueue;
+    void startUpload(QFtp * conn ,TransferQueueItem * itemToTransfer);
 
 private slots:
     void on_buttonBox_rejected();
@@ -46,6 +45,7 @@ private slots:
     void anonymousChanged(int newState);
     void addItemToTransferQueue(TransferQueueItem * item);
     void queueChecked(QFtp * connection);
+    void addPendingItem(TransferQueueItem * item);
 
 signals:
     void pwdChanged(const QString &);
