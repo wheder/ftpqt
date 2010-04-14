@@ -199,21 +199,24 @@ void Panel::on_deleteButton_clicked()
     if (reply == QMessageBox::Yes)
     {
         QString fileName = ui->treeWidgetFTP->currentItem()->text(0);
-        if (isDirFTP.value(fileName))
+        if (fileName != QString(".") && fileName != (".."))
         {
-            rootDirToDelete = QString(fileName);
+            if (isDirFTP.value(fileName))
+            {
+                rootDirToDelete = QString(fileName);
 
-            deleteFile(currentPathFTP, fileName, false);
-            isDirFTP.clear();
-            (*ftp_con)->list();
-            connect((*ftp_con), SIGNAL(done(bool)), this, SLOT(filesOnFTPDeleted(bool)));           
-        }
-        else
-        {
-            (*ftp_con)->remove(fileName);
-            ui->treeWidgetFTP->clear();
-            isDirFTP.clear();
-            (*ftp_con)->list();
+                deleteFile(currentPathFTP, fileName, false);
+                isDirFTP.clear();
+                (*ftp_con)->list();
+                connect((*ftp_con), SIGNAL(done(bool)), this, SLOT(filesOnFTPDeleted(bool)));
+            }
+            else
+            {
+                (*ftp_con)->remove(fileName);
+                ui->treeWidgetFTP->clear();
+                isDirFTP.clear();
+                (*ftp_con)->list();
+            }
         }
     }    
 }
