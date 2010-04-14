@@ -170,13 +170,19 @@ void Panel::on_renameButton_clicked()
     }   
 }
 
+void Panel::dirsOnFTPDeleted(bool error)
+{
+    disconnect((*ftp_con), SIGNAL(done(bool)), this, SLOT(dirsOnFTPDeleted(bool)));    
+    ui->treeWidgetFTP->clear();
+    isDirFTP.clear();
+    (*ftp_con)->list();
+}
+
 void Panel::filesOnFTPDeleted(bool error)
 {
-    disconnect((*ftp_con), SIGNAL(done(bool)), this, SLOT(filesOnFTPDeleted(bool)));
-   //deleteFile(currentPathFTP, , true);
-   ui->treeWidgetFTP->clear();
-   isDirFTP.clear();
-   (*ftp_con)->list();
+   disconnect((*ftp_con), SIGNAL(done(bool)), this, SLOT(filesOnFTPDeleted(bool)));
+   deleteFile(currentPathFTP, rootDirToDelete, true);
+   connect((*ftp_con), SIGNAL(done(bool)), this, SLOT(dirsOnFTPDeleted(bool)));
 }
 
 void Panel::on_deleteButton_clicked()
@@ -195,12 +201,12 @@ void Panel::on_deleteButton_clicked()
         QString fileName = ui->treeWidgetFTP->currentItem()->text(0);
         if (isDirFTP.value(fileName))
         {
+            rootDirToDelete = QString(fileName);
 
             deleteFile(currentPathFTP, fileName, false);
-            connect((*ftp_con), SIGNAL(done(bool)), this, SLOT(filesOnFTPDeleted(bool)));
-            ui->treeWidgetFTP->clear();
             isDirFTP.clear();
             (*ftp_con)->list();
+            connect((*ftp_con), SIGNAL(done(bool)), this, SLOT(filesOnFTPDeleted(bool)));           
         }
         else
         {
@@ -209,12 +215,8 @@ void Panel::on_deleteButton_clicked()
             isDirFTP.clear();
             (*ftp_con)->list();
         }
-
-
     }    
 }
-
-
 
 void Panel::directoryStructureOnFtpCreated(bool error) {
     disconnect((*ftp_con), SIGNAL(done(bool)), this, SLOT(directoryStructureOnFtpCreated(bool)));
@@ -223,11 +225,7 @@ void Panel::directoryStructureOnFtpCreated(bool error) {
     isDirFTP.clear();
     (*ftp_con)->list();
     ui->treeWidgetFTP->setDisabled(false);
-
-
-
     connect((*ftp_con), SIGNAL(done(bool)), this, SLOT(startTransfers(bool)));
-
 }
 
 void Panel::on_uploadButton_clicked()
@@ -284,8 +282,6 @@ void Panel::uploadDir(QString local, QString ftp, QString dirname) {
         else {
             uploadFile(local, ftp, QFileInfo(file).fileName());
         }
-
-
     }
 
     (*ftp_con)->cd("..");
@@ -336,24 +332,16 @@ void Panel::uploadFile(QString local, QString ftp, QString file) {
     //if (!ui->treeWidgetLocal->currentItem())QMessageBox::information(this, tr("Info"), tr("No item selected!"));
     //QMessageBox::information(this, tr("Info"),  ui->treeWidgetLocal->currentItem()->text(0));
 
-
-
-
     std::cout << file.toStdString() << std::endl;
 }
 
 void Panel::deleteFile(QString ftp, QString fileName, bool delDirs)
 {
     (*ftp_con)->cd(fileName);
-    ftp = ftp + QString("/") + fileName;
-    isDirFTP.clear();
-    ui->treeWidgetFTP->clear();
-    (*ftp_con)->list();
+    ftp = ftp + QString("/") + fileName;   
     QDir currentDir = QDir(ftp);
     QStringList files;
-
     files = currentDir.entryList(QStringList(QString("*")));
-
     for (int i = 0; i < files.size(); ++i) {
         QFile file(currentDir.absoluteFilePath(files[i]));
         if(QFileInfo(file).isDir()) {
@@ -368,8 +356,6 @@ void Panel::deleteFile(QString ftp, QString fileName, bool delDirs)
             std::cout << "deleting file: " << currentPathFTP.toStdString() << "/" << QFileInfo(file).fileName().toStdString() << std::endl;
             (*ftp_con)->remove(QFileInfo(file).fileName());
         }
-
-
     }
     (*ftp_con)->cd("..");    
     if (delDirs)
