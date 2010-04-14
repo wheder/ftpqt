@@ -109,7 +109,7 @@ void Panel::on_treeWidgetFTP_itemActivated(QTreeWidgetItem* item, int /*column*/
 }
 
 
-void Panel::setFTPConn(QFtp **ftp)
+void Panel::setFTPConn(QxFtp **ftp)
 {   
     ftp_con = ftp;
 
@@ -170,19 +170,19 @@ void Panel::on_renameButton_clicked()
     }   
 }
 
-void Panel::dirsOnFTPDeleted(bool error)
+void Panel::dirsOnFTPDeleted(QxFtp *,bool error)
 {
-    disconnect((*ftp_con), SIGNAL(done(bool)), this, SLOT(dirsOnFTPDeleted(bool)));    
+    disconnect((*ftp_con), SIGNAL(x_done(QxFtp *,bool)), this, SLOT(dirsOnFTPDeleted(QxFtp *,bool)));
     ui->treeWidgetFTP->clear();
     isDirFTP.clear();
     (*ftp_con)->list();
 }
 
-void Panel::filesOnFTPDeleted(bool error)
+void Panel::filesOnFTPDeleted(QxFtp *,bool error)
 {
-   disconnect((*ftp_con), SIGNAL(done(bool)), this, SLOT(filesOnFTPDeleted(bool)));
+   disconnect((*ftp_con), SIGNAL(x_done(QxFtp *,bool)), this, SLOT(filesOnFTPDeleted(QxFtp *,bool)));
    deleteFile(currentPathFTP, rootDirToDelete, true);
-   connect((*ftp_con), SIGNAL(done(bool)), this, SLOT(dirsOnFTPDeleted(bool)));
+   connect((*ftp_con), SIGNAL(x_done(QxFtp *,bool)), this, SLOT(dirsOnFTPDeleted(QxFtp *,bool)));
 }
 
 void Panel::on_deleteButton_clicked()
@@ -205,10 +205,11 @@ void Panel::on_deleteButton_clicked()
             {
                 rootDirToDelete = QString(fileName);
 
+
                 deleteFile(currentPathFTP, fileName, false);
                 isDirFTP.clear();
                 (*ftp_con)->list();
-                connect((*ftp_con), SIGNAL(done(bool)), this, SLOT(filesOnFTPDeleted(bool)));
+                connect((*ftp_con), SIGNAL(x_done(QxFtp *,bool)), this, SLOT(filesOnFTPDeleted(QxFtp *,bool)));
             }
             else
             {
@@ -221,14 +222,14 @@ void Panel::on_deleteButton_clicked()
     }    
 }
 
-void Panel::directoryStructureOnFtpCreated(bool error) {
-    disconnect((*ftp_con), SIGNAL(done(bool)), this, SLOT(directoryStructureOnFtpCreated(bool)));
+void Panel::directoryStructureOnFtpCreated(QxFtp *, bool /*error*/) {
+    disconnect((*ftp_con), SIGNAL(x_done(QxFtp *, bool)), this, SLOT(directoryStructureOnFtpCreated(QxFtp *, bool)));
     ui->treeWidgetFTP->clear();
     ui->treeWidgetFTP->setDisabled(false);
     isDirFTP.clear();
     (*ftp_con)->list();
     ui->treeWidgetFTP->setDisabled(false);
-    connect((*ftp_con), SIGNAL(done(bool)), this, SLOT(startTransfers(bool)));
+    connect((*ftp_con), SIGNAL(x_done(QxFtp*, bool)), this, SLOT(startTransfers(QxFtp *, bool)));
 }
 
 void Panel::on_uploadButton_clicked()
@@ -251,7 +252,7 @@ void Panel::on_uploadButton_clicked()
         uploadFile(currentPathLocal, ui->ftpPathLineEdit->text(), fileName);
     }
     //pokracovat se bude az se to plneni seznamu zklidni.
-    connect((*ftp_con), SIGNAL(done(bool)), this, SLOT(directoryStructureOnFtpCreated(bool)));
+    connect((*ftp_con), SIGNAL(x_done(QxFtp *, bool)), this, SLOT(directoryStructureOnFtpCreated(QxFtp *, bool)));
     (*ftp_con)->cd(".");
 }
 
@@ -370,8 +371,8 @@ void Panel::deleteFile(QString ftp, QString fileName, bool delDirs)
 void Panel::changePwd(const QString & pwd) {
     ui->ftpPathLineEdit->setText(pwd);
 }
-void Panel::startTransfers(bool) {
-    disconnect((*ftp_con), SIGNAL(done(bool)), this, SLOT(startTransfers(bool)));
+void Panel::startTransfers(QxFtp * , bool) {
+    disconnect((*ftp_con), SIGNAL(x_done(QxFtp*, bool)), this, SLOT(startTransfers(QxFtp *, bool)));
     emit canTransfer((*ftp_con));
 }
 

@@ -23,7 +23,7 @@ static const uint qt_meta_data_Panel[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-      13,   14, // methods
+      14,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -32,26 +32,27 @@ static const uint qt_meta_data_Panel[] = {
 
  // signals: signature, parameters, type, tag, flags
       12,    7,    6,    6, 0x05,
-      33,   31,    6,    6, 0x05,
+      34,   32,    6,    6, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      81,    6,    6,    6, 0x08,
-     107,    6,    6,    6, 0x08,
-     133,    6,    6,    6, 0x08,
-     159,    6,    6,    6, 0x08,
-     192,  180,    6,    6, 0x08,
-     245,  180,    6,    6, 0x08,
-     304,  300,    6,    6, 0x08,
-     323,    6,    6,    6, 0x08,
-     352,  346,    6,    6, 0x08,
-     391,  389,    6,    6, 0x08,
-     412,  346,    6,    6, 0x08,
+      82,    6,    6,    6, 0x08,
+     108,    6,    6,    6, 0x08,
+     134,    6,    6,    6, 0x08,
+     160,    6,    6,    6, 0x08,
+     193,  181,    6,    6, 0x08,
+     246,  181,    6,    6, 0x08,
+     305,  301,    6,    6, 0x08,
+     324,    6,    6,    6, 0x08,
+     354,  347,    6,    6, 0x08,
+     401,  398,    6,    6, 0x08,
+     429,  347,    6,    6, 0x08,
+     460,  347,    6,    6, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_Panel[] = {
-    "Panel\0\0conn\0canTransfer(QFtp*)\0i\0"
+    "Panel\0\0conn\0canTransfer(QxFtp*)\0i\0"
     "newTransferQueueItemCreated(TransferQueueItem*)\0"
     "on_uploadButton_clicked()\0"
     "on_renameButton_clicked()\0"
@@ -60,8 +61,10 @@ static const char qt_meta_stringdata_Panel[] = {
     "on_treeWidgetFTP_itemActivated(QTreeWidgetItem*,int)\0"
     "on_treeWidgetLocal_itemActivated(QTreeWidgetItem*,int)\0"
     "pwd\0changePwd(QString)\0on_cdUpLocal_clicked()\0"
-    "error\0directoryStructureOnFtpCreated(bool)\0"
-    "a\0startTransfers(bool)\0filesOnFTPDeleted(bool)\0"
+    ",error\0directoryStructureOnFtpCreated(QxFtp*,bool)\0"
+    ",a\0startTransfers(QxFtp*,bool)\0"
+    "filesOnFTPDeleted(QxFtp*,bool)\0"
+    "dirsOnFTPDeleted(QxFtp*,bool)\0"
 };
 
 const QMetaObject Panel::staticMetaObject = {
@@ -93,7 +96,7 @@ int Panel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: canTransfer((*reinterpret_cast< QFtp*(*)>(_a[1]))); break;
+        case 0: canTransfer((*reinterpret_cast< QxFtp*(*)>(_a[1]))); break;
         case 1: newTransferQueueItemCreated((*reinterpret_cast< TransferQueueItem*(*)>(_a[1]))); break;
         case 2: on_uploadButton_clicked(); break;
         case 3: on_renameButton_clicked(); break;
@@ -103,18 +106,19 @@ int Panel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 7: on_treeWidgetLocal_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
         case 8: changePwd((*reinterpret_cast< const QString(*)>(_a[1]))); break;
         case 9: on_cdUpLocal_clicked(); break;
-        case 10: directoryStructureOnFtpCreated((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 11: startTransfers((*reinterpret_cast< bool(*)>(_a[1]))); break;
-        case 12: filesOnFTPDeleted((*reinterpret_cast< bool(*)>(_a[1]))); break;
+        case 10: directoryStructureOnFtpCreated((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 11: startTransfers((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 12: filesOnFTPDeleted((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 13: dirsOnFTPDeleted((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         default: ;
         }
-        _id -= 13;
+        _id -= 14;
     }
     return _id;
 }
 
 // SIGNAL 0
-void Panel::canTransfer(QFtp * _t1)
+void Panel::canTransfer(QxFtp * _t1)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);

@@ -7,8 +7,10 @@ TEMPLATE = app
 SOURCES += main.cpp \
     connection.cpp \
     panel.cpp \
-    transferqueueitem.cpp
-HEADERS += connection.h \
+    transferqueueitem.cpp \
+    qxftp.cpp
+HEADERS += qxftp.h\
+    connection.h \
     panel.h \
     transferqueueitem.h
 FORMS += connection.ui \

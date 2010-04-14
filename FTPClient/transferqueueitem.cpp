@@ -62,7 +62,7 @@ TransferQueueItem::~TransferQueueItem(){
          delete killUponDeath.takeFirst();
     }
     if (m_conn != NULL) {
-        disconnect(m_conn, SIGNAL(dataTransferProgress(qint64,qint64)), this, SLOT(updateProgress(qint64,qint64)));
+        disconnect(m_conn, SIGNAL(x_dataTransferProgress(QxFtp *, qint64,qint64)), this, SLOT(updateProgress(QxFtp *, qint64,qint64)));
         m_conn = NULL;
     }
 }
@@ -71,7 +71,7 @@ void TransferQueueItem::setComplete(int amoutn) {
     m_sizeStart=amoutn;
 }
 
-void TransferQueueItem::updateProgress(qint64 current, qint64 total) {
+void TransferQueueItem::updateProgress(QxFtp * /*conn*/, qint64 current, qint64 total) {
     m_progress->setValue(current);
     m_progress->setMaximum(total);
 }
@@ -85,10 +85,10 @@ int TransferQueueItem::getId()
 {
     return id;
 }
-void TransferQueueItem::connectFtp(QFtp * conn) {
+void TransferQueueItem::connectFtp(QxFtp * conn) {
     m_conn = conn;
-    connect(m_conn, SIGNAL(dataTransferProgress(qint64,qint64)), this, SLOT(updateProgress(qint64,qint64)));
+    connect(m_conn, SIGNAL(x_dataTransferProgress(QxFtp*,qint64,qint64)), this, SLOT(updateProgress(QxFtp *, qint64,qint64)));
 }
-QFtp * TransferQueueItem::conn() {
+QxFtp * TransferQueueItem::conn() {
     return m_conn;
 }
