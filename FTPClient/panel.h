@@ -43,6 +43,7 @@ private:
     bool localPanelActive;
     void uploadDir(QString local, QString ftp, QString dirname);
     void uploadFile(QString local, QString ftp, QString file);
+    void deleteFile(QString ftp, QString fileName, bool delDirs);
 private slots:
     void on_uploadButton_clicked();
     void on_renameButton_clicked();
@@ -54,6 +55,7 @@ private slots:
     void on_cdUpLocal_clicked();
     void directoryStructureOnFtpCreated(bool error);
     void startTransfers(bool a);
+    void filesOnFTPDeleted(bool error);
 signals:
     void canTransfer(QFtp * conn);
     void newTransferQueueItemCreated(TransferQueueItem * i);

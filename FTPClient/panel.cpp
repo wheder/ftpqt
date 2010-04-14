@@ -170,6 +170,15 @@ void Panel::on_renameButton_clicked()
     }   
 }
 
+void Panel::filesOnFTPDeleted(bool error)
+{
+    disconnect((*ftp_con), SIGNAL(done(bool)), this, SLOT(filesOnFTPDeleted(bool)));
+   //deleteFile(currentPathFTP, , true);
+   ui->treeWidgetFTP->clear();
+   isDirFTP.clear();
+   (*ftp_con)->list();
+}
+
 void Panel::on_deleteButton_clicked()
 {
     if (!ui->treeWidgetFTP->currentItem())
@@ -186,18 +195,27 @@ void Panel::on_deleteButton_clicked()
         QString fileName = ui->treeWidgetFTP->currentItem()->text(0);
         if (isDirFTP.value(fileName))
         {
-            // RMDIR!!!!
-            //(*ftp_con)->
+
+            deleteFile(currentPathFTP, fileName, false);
+            connect((*ftp_con), SIGNAL(done(bool)), this, SLOT(filesOnFTPDeleted(bool)));
+            ui->treeWidgetFTP->clear();
+            isDirFTP.clear();
+            (*ftp_con)->list();
         }
         else
         {
             (*ftp_con)->remove(fileName);
+            ui->treeWidgetFTP->clear();
+            isDirFTP.clear();
+            (*ftp_con)->list();
         }
-        isDirFTP.clear();
-        ui->treeWidgetFTP->clear();
-        (*ftp_con)->list();
+
+
     }    
 }
+
+
+
 void Panel::directoryStructureOnFtpCreated(bool error) {
     disconnect((*ftp_con), SIGNAL(done(bool)), this, SLOT(directoryStructureOnFtpCreated(bool)));
     ui->treeWidgetFTP->clear();
@@ -270,7 +288,6 @@ void Panel::uploadDir(QString local, QString ftp, QString dirname) {
 
     }
 
-
     (*ftp_con)->cd("..");
 }
 void Panel::uploadFile(QString local, QString ftp, QString file) {
@@ -323,6 +340,42 @@ void Panel::uploadFile(QString local, QString ftp, QString file) {
 
 
     std::cout << file.toStdString() << std::endl;
+}
+
+void Panel::deleteFile(QString ftp, QString fileName, bool delDirs)
+{
+    (*ftp_con)->cd(fileName);
+    ftp = ftp + QString("/") + fileName;
+    isDirFTP.clear();
+    ui->treeWidgetFTP->clear();
+    (*ftp_con)->list();
+    QDir currentDir = QDir(ftp);
+    QStringList files;
+
+    files = currentDir.entryList(QStringList(QString("*")));
+
+    for (int i = 0; i < files.size(); ++i) {
+        QFile file(currentDir.absoluteFilePath(files[i]));
+        if(QFileInfo(file).isDir()) {
+            if (QFileInfo(file).fileName() == "." || QFileInfo(file).fileName() == ".."){
+                //ignorujeme, jinak se zacyklime
+            }
+            else {
+                deleteFile(ftp, QFileInfo(file).fileName(), delDirs);
+            }
+        }
+        else {
+            std::cout << "deleting file: " << currentPathFTP.toStdString() << "/" << QFileInfo(file).fileName().toStdString() << std::endl;
+            (*ftp_con)->remove(QFileInfo(file).fileName());
+        }
+
+
+    }
+    (*ftp_con)->cd("..");    
+    if (delDirs)
+    {
+        (*ftp_con)->rmdir(fileName);
+    }
 }
 
 void Panel::changePwd(const QString & pwd) {
