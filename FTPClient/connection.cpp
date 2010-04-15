@@ -57,17 +57,31 @@ void Connection::ftp_disconnect() {
     this->show();
 }
 void Connection::startTransfer(QxFtp * conn ,TransferQueueItem * itemToTransfer){
+    if (itemToTransfer->isDownload()) {
+        QFile * file = new QFile(itemToTransfer->getLocalDir()+QString("/")+itemToTransfer->getFileName());
+        if (!file->open(QIODevice::WriteOnly)) {
+            QMessageBox::critical(this, tr("Error"), tr("Cannot open file '%1' for reading!").arg(itemToTransfer->getFileName()));
+            return;
+        }
 
-    QFile * file = new QFile(itemToTransfer->getLocalDir()+QString("/")+itemToTransfer->getFileName());
-    if (!file->open(QIODevice::ReadOnly)) {
-        QMessageBox::critical(this, tr("Error"), tr("Cannot open file '%1' for reading!").arg(itemToTransfer->getFileName()));
-        return;
+
+        itemToTransfer->setId(conn->get(itemToTransfer->getFtpDir()+QString("/")+itemToTransfer->getFileName(), file));
+        pendingQueue.append(itemToTransfer);
+        itemToTransfer->connectFtp(conn);
     }
+    else {
+        QFile * file = new QFile(itemToTransfer->getLocalDir()+QString("/")+itemToTransfer->getFileName());
+        if (!file->open(QIODevice::ReadOnly)) {
+            QMessageBox::critical(this, tr("Error"), tr("Cannot open file '%1' for reading!").arg(itemToTransfer->getFileName()));
+            return;
+        }
 
 
-    itemToTransfer->setId(conn->put(file, itemToTransfer->getFtpDir()+QString("/")+itemToTransfer->getFileName()));
-    pendingQueue.append(itemToTransfer);
-    itemToTransfer->connectFtp(conn);
+        itemToTransfer->setId(conn->put(file, itemToTransfer->getFtpDir()+QString("/")+itemToTransfer->getFileName()));
+        pendingQueue.append(itemToTransfer);
+        itemToTransfer->connectFtp(conn);
+
+    }
 
 }
 

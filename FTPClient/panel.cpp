@@ -6,7 +6,8 @@ Panel::Panel(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Panel)
 {
-    currentPathLocal = QString(".");
+    currentPathLocal = QDir(QString(".")).absolutePath();
+
     ui->setupUi(this);
     addItemLocal();
     ftp_con = NULL;
@@ -322,21 +323,90 @@ void Panel::uploadFile(QString local, QString ftp, QString file) {
     ui->gridLayout_2->addWidget(t, level, 2, 1,1,0);
     item->addChild(t);
     emit newTransferQueueItemCreated(item);
+}
+void Panel::on_downloadButton_clicked()
+{
+    if (!ui->treeWidgetFTP->currentItem())
+    {
+        QMessageBox::critical(this, tr("Error"), tr("No item available!"));
+        return;
+    }
+    //ui->treeWidgetFTP->setDisabled(true);
+    QString fileName = ui->treeWidgetFTP->selectedItems().at(0)->text(0);
+    if (isDirFTP.value(fileName)) {
+        downloadDir(currentPathLocal+"/"+fileName, ui->ftpPathLineEdit->text()+"/"+fileName, fileName);
+    }
+    else {
+        downloadFile(currentPathLocal, ui->ftpPathLineEdit->text(), fileName);
+    }
+    //pokracovat se bude az se to plneni seznamu zklidni.
+    connect((*ftp_con), SIGNAL(x_done(QxFtp *, bool)), this, SLOT(directoryStructureOnFtpCreated(QxFtp *, bool)));
+    (*ftp_con)->cd(".");
 
-    //QMessageBox::information(this, tr("Info"), tr("%1").arg(time.toString(Qt::ISODate)));
-    //ui->formLayout->setWidget(0, QFormLayout::LabelRole, l);
-    //ui->formLayout->insertRow(0, l);
-    //ui->gridLayout_2->insertRow(0, l->text(), p);
 
-    //formLayout->setWidget(0, QFormLayout::LabelRole, label_3);
-    //formLayout->setWidget(0, QFormLayout::FieldRole, progressBar);
-    //p->
-    //ui->transferScrollArea->addScrollBarWidget(p, Qt::AlignLeft);
-    //if (!ui->treeWidgetLocal->isItemSelected()) QMessageBox::information(this, tr("No item selected!"));
-    //if (!ui->treeWidgetLocal->currentItem())QMessageBox::information(this, tr("Info"), tr("No item selected!"));
-    //QMessageBox::information(this, tr("Info"),  ui->treeWidgetLocal->currentItem()->text(0));
+}
+void Panel::downloadDir(QString local, QString ftp, QString dirname) {
+    QDir currentDir = QDir(local);
+    QStringList files;
 
-    std::cout << file.toStdString() << std::endl;
+    (*ftp_con)->cd(dirname);
+    isDirFTP.clear();
+    ui->treeWidgetFTP->clear();
+    (*ftp_con)->list();
+    for (int i = 0; i < files.size(); ++i) {
+        QFile file(currentDir.absoluteFilePath(files[i]));
+        if(QFileInfo(file).isDir()) {
+            if (QFileInfo(file).fileName() == "." || QFileInfo(file).fileName() == ".."){
+                //ignorujeme, jinak se zacyklime
+            }
+            else {
+                if (!isDirFTP.value(ftp+"/"+QFileInfo(file).fileName())) {
+                    (*ftp_con)->mkdir(ftp+"/"+QFileInfo(file).fileName());
+                }
+                downloadDir(local+"/"+QFileInfo(file).fileName(), ftp+"/"+QFileInfo(file).fileName(), QFileInfo(file).fileName());
+                isDirFTP.clear();
+                ui->treeWidgetFTP->clear();
+                (*ftp_con)->list();
+            }
+        }
+        else {
+            downloadFile(local, ftp, QFileInfo(file).fileName());
+        }
+    }
+
+    (*ftp_con)->cd("..");
+}
+void Panel::downloadFile(QString local, QString ftp, QString file) {
+    int fileSize = 0;
+    TransferQueueItem * item;
+    //QHash<QString, bool>::const_iterator i = isDirFTP.find(file);
+    if (!QDir(local).exists(file)) {//file neexistuje ;-)
+      item = new TransferQueueItem(true, local, ftp, file, false, 0, (*ftp_con));
+
+    }
+    else { //existuje, budeme appendovat :-/
+        QTreeWidgetItem * t = ui->treeWidgetLocal->findItems(file, Qt::MatchExactly, 0).first();
+        item = new TransferQueueItem(true, local, ftp, file, true, t->text(1).toInt(), (*ftp_con));
+        fileSize = t->text(1).toInt();
+    }
+    //if (isDirFTP.find())
+
+    QProgressBar * p = new QProgressBar(ui->scrollAreaWidgetContents);
+    p->setMaximum(QFile(local+file).size());
+    p->setValue(0);
+    QLabel * l = new QLabel(ui->scrollAreaWidgetContents);
+    l->setText(file);
+    l->setToolTip(local+QString(" -> ")+ftp);
+    QPushButton * t = new QPushButton(QString("Cancel"), ui->scrollAreaWidgetContents);
+
+    int level = ui->scrollAreaWidgetContents->children().size()/3;
+    ui->gridLayout_2->addWidget(l, level, 0, 1,1,0);
+    item->addChild(l);
+    ui->gridLayout_2->addWidget(p, level, 1, 1,1,0);
+    item->addProgress(p);
+    ui->gridLayout_2->addWidget(t, level, 2, 1,1,0);
+    item->addChild(t);
+    emit newTransferQueueItemCreated(item);
 }
 
 void Panel::deleteFile(QString ftp, QString fileName, bool delDirs)
@@ -376,4 +446,5 @@ void Panel::startTransfers(QxFtp * , bool) {
     emit canTransfer((*ftp_con));
     //emit canTransferNow();
 }
+
 

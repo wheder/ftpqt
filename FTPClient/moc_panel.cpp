@@ -23,7 +23,7 @@ static const uint qt_meta_data_Panel[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-      15,   14, // methods
+      16,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -37,17 +37,18 @@ static const uint qt_meta_data_Panel[] = {
 
  // slots: signature, parameters, type, tag, flags
       99,    6,    6,    6, 0x08,
-     125,    6,    6,    6, 0x08,
-     151,    6,    6,    6, 0x08,
-     177,    6,    6,    6, 0x08,
-     210,  198,    6,    6, 0x08,
-     263,  198,    6,    6, 0x08,
-     322,  318,    6,    6, 0x08,
-     341,    6,    6,    6, 0x08,
-     371,  364,    6,    6, 0x08,
-     418,  415,    6,    6, 0x08,
-     446,  364,    6,    6, 0x08,
-     477,  364,    6,    6, 0x08,
+     127,    6,    6,    6, 0x08,
+     153,    6,    6,    6, 0x08,
+     179,    6,    6,    6, 0x08,
+     205,    6,    6,    6, 0x08,
+     238,  226,    6,    6, 0x08,
+     291,  226,    6,    6, 0x08,
+     350,  346,    6,    6, 0x08,
+     369,    6,    6,    6, 0x08,
+     399,  392,    6,    6, 0x08,
+     446,  443,    6,    6, 0x08,
+     474,  392,    6,    6, 0x08,
+     505,  392,    6,    6, 0x08,
 
        0        // eod
 };
@@ -56,6 +57,7 @@ static const char qt_meta_stringdata_Panel[] = {
     "Panel\0\0conn\0canTransfer(QxFtp*)\0"
     "canTransferNow()\0i\0"
     "newTransferQueueItemCreated(TransferQueueItem*)\0"
+    "on_downloadButton_clicked()\0"
     "on_uploadButton_clicked()\0"
     "on_renameButton_clicked()\0"
     "on_deleteButton_clicked()\0"
@@ -101,21 +103,22 @@ int Panel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 0: canTransfer((*reinterpret_cast< QxFtp*(*)>(_a[1]))); break;
         case 1: canTransferNow(); break;
         case 2: newTransferQueueItemCreated((*reinterpret_cast< TransferQueueItem*(*)>(_a[1]))); break;
-        case 3: on_uploadButton_clicked(); break;
-        case 4: on_renameButton_clicked(); break;
-        case 5: on_deleteButton_clicked(); break;
-        case 6: on_cdUpFTP_clicked(); break;
-        case 7: on_treeWidgetFTP_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 8: on_treeWidgetLocal_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 9: changePwd((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 10: on_cdUpLocal_clicked(); break;
-        case 11: directoryStructureOnFtpCreated((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 12: startTransfers((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 13: filesOnFTPDeleted((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 14: dirsOnFTPDeleted((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 3: on_downloadButton_clicked(); break;
+        case 4: on_uploadButton_clicked(); break;
+        case 5: on_renameButton_clicked(); break;
+        case 6: on_deleteButton_clicked(); break;
+        case 7: on_cdUpFTP_clicked(); break;
+        case 8: on_treeWidgetFTP_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 9: on_treeWidgetLocal_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 10: changePwd((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 11: on_cdUpLocal_clicked(); break;
+        case 12: directoryStructureOnFtpCreated((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 13: startTransfers((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 14: filesOnFTPDeleted((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 15: dirsOnFTPDeleted((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         default: ;
         }
-        _id -= 15;
+        _id -= 16;
     }
     return _id;
 }
