@@ -17,8 +17,8 @@ Connection::Connection(QWidget *parent) :
     max_connections = ui->maxConnections->value();
     connect(ui->anonymousConnection, SIGNAL(stateChanged(int)), this, SLOT(anonymousChanged(int)));
     connect(panel, SIGNAL(newTransferQueueItemCreated(TransferQueueItem*)), this, SLOT(addItemToTransferQueue(TransferQueueItem*)));
-    connect(panel, SIGNAL(canTransfer(QxFtp*)), this, SLOT(queueChecked(QxFtp*)));
-    connect(this, SIGNAL(canTransfer(QxFtp*)), this, SLOT(queueChecked(QxFtp*)));
+    connect(panel, SIGNAL(canTransferNow()), this, SLOT(setupTransfers()));
+    connect(panel, SIGNAL(canTransfer(QxFtp*)), this, SLOT(queueCheckedFirst(QxFtp*)));
 }
 
 Connection::~Connection()
@@ -90,30 +90,28 @@ void Connection::ftp_connect() {
 
 void Connection::ftpCommandStarted(QxFtp * a, int id)
 {
-    setupTransfers();
+emit setupTransfers();
 
 }
 
 void Connection::ftpCommandFinished(QxFtp * origin, int id, bool error)
 {
 
-    std::cout<< "finished command id"<<id <<std::endl;
+    //std::cout<< "finished command id"<<id <<std::endl;
 
-    if (ftp_conn->currentCommand() != QxFtp::RawCommand) pwd();
+    if (origin->currentCommand() != QxFtp::RawCommand && origin->currentCommand() != QxFtp::Put && origin->currentCommand() != QxFtp::Get) pwd();
     //ta svina se zacyklila...
-    if (error) for (int i=0; i< all_connections.size(); i++) {
-        std::cerr<< i<<":_____________________" <<std::endl;
-        std::cerr<< "State: "<<all_connections.at(i)->state() <<std::endl;
-        std::cerr<< "Error: "<<all_connections.at(i)->errorString().toStdString() <<std::endl;
-        std::cerr<< "_____________________" <<std::endl;
+    if (error) {
+        std::cerr<< "State: "<<origin->state() <<std::endl;
+        std::cerr<< "Error: "<<origin->errorString().toStdString() <<std::endl;
     }
 
-    if (ftp_conn->currentCommand() == QxFtp::ConnectToHost) {
+    if (origin->currentCommand() == QxFtp::ConnectToHost) {
         if (error) {
             QMessageBox::information(this, tr("FTP"),
                                      tr("Unable to connect to the FTP server "
                                         "at '%1'<br />%2")
-                                     .arg(ui->serverAddress->text()).arg(ftp_conn->errorString()));
+                                     .arg(ui->serverAddress->text()).arg(origin->errorString()));
             ftp_disconnect();
             return;
         }
@@ -134,49 +132,48 @@ void Connection::ftpCommandFinished(QxFtp * origin, int id, bool error)
 //![6]
 
 //![7]
-    if (ftp_conn->currentCommand() == QxFtp::Login) {
+    if (origin->currentCommand() == QxFtp::Login) {
         if (error) {
             QMessageBox::information(this, tr("FTP"),
                                      tr("Unable to login to the FTP server:<br />%1")
-                                     .arg(ftp_conn->errorString()));
+                                     .arg(origin->errorString()));
             ui->statusLabel->setText(tr("Disconnected from %1.")
                                  .arg(ui->serverAddress->text()));
             ftp_disconnect();
             return;
         }
-        ftp_conn->list();
+        if (origin == ftp_conn)origin->list();
 
     }
-    else if (ftp_conn->currentCommand() == QxFtp::Mkdir) {
+    else if (origin->currentCommand() == QxFtp::Mkdir) {
         //std::cout<<"created"<<std::endl;
         //ftp_conn->list();
     }
-    else if (ftp_conn->currentCommand() == QxFtp::List) {
+    else if (origin->currentCommand() == QxFtp::List) {
     }
-    else if (ftp_conn->currentCommand() == QxFtp::Rename) {
+    else if (origin->currentCommand() == QxFtp::Rename) {
         if (error) {
             QMessageBox::critical(this, tr("Error!"),
                                      tr("'%1'")
-                                     .arg(ftp_conn->errorString()));
-            ftp_conn->list();
+                                     .arg(origin->errorString()));
+            origin->list();
         }
     }
-    else if (ftp_conn->currentCommand() == QxFtp::Put || ftp_conn->currentCommand() == QxFtp::Get) {
-
-
-
-    }
-
-
-    for (int i = 0 ; i < pendingQueue.size() ; i++)
-    {
-        if (id == pendingQueue.at(i)->getId() && pendingQueue.at(i)->conn()->currentCommand() == QxFtp::Put)
+    else if (origin->currentCommand() == QxFtp::Put || origin->currentCommand() == QxFtp::Get) {
+        for (int i = 0 ; i < pendingQueue.size() ; i++)
         {
-            delete pendingQueue.at(i);
-            pendingQueue.removeAt(i);
-            break;
+            if (origin == pendingQueue.at(i)->conn())
+            {
+                pendingQueue.at(i)->deleteLater();
+                pendingQueue.removeAt(i);
+                break;
+            }
         }
+
     }
+
+
+    emit setupTransfers();
 
 
 }
@@ -214,14 +211,22 @@ void Connection::anonymousChanged(int newState) {
 void Connection::addItemToTransferQueue(TransferQueueItem * item) {
     transferQueue.append(item);
 }
+
+void Connection::queueCheckedFirst(QxFtp * connection) {
+    connect(this, SIGNAL(canTransfer(QxFtp*)), this, SLOT(queueChecked(QxFtp*)));
+    emit setupTransfers();
+}
 void Connection::queueChecked(QxFtp * connection) {
-    while (!transferQueue.isEmpty()) {
+    if (!transferQueue.isEmpty()) {
         TransferQueueItem * item = transferQueue.takeFirst();       
 
 
         for (int i=0; i< all_connections.size(); i++) {
             if (all_connections.at(i) == connection) {
-                qDebug()<<"vlakno "<<i << "checkuje queue";
+                //qDebug()<<"vlakno "<<i << "checkuje queue " << item->getFileName();
+            }
+            else {
+                //qDebug()<<"vlakno "<<i << "NEcheckuje queue. dela toto: " <<  all_connections.at(i)->currentCommand();
             }
         }
 
@@ -236,7 +241,7 @@ void Connection::setupTransfers() {
     //staci nam vytvorit jeden, dalsi se vytvori pri dalsich krocich
 
     if (ftp_conn->state() != QxFtp::LoggedIn) return;
-    if (all_connections.size() < max_connections) {
+    while (all_connections.size() < max_connections) {
         qDebug("creating new connection");
         QxFtp * another_conn = new QxFtp(this);
 
@@ -248,13 +253,19 @@ void Connection::setupTransfers() {
         another_conn->connectToHost(ui->serverAddress->text(), 21);
 
 
-        if (ui->anonymousConnection->isChecked()) ftp_conn->login();
+        if (ui->anonymousConnection->isChecked()) another_conn->login();
         else another_conn->login(ui->user->text(), ui->password->text());
 
         all_connections.append(another_conn);
     }
     for (int i=0; i< all_connections.size(); i++) {
-        if (all_connections.at(i)->currentId() == 0) {
+        if (!all_connections.at(i)->hasPendingCommands() && all_connections.at(i)->currentCommand() == QxFtp::None) {
+            //bool ok = true;
+            //for (int l = 0; l<pendingQueue.size(); l++)
+            //if (pendingQueue.at(l)->conn() == all_connections.at(i)) ok = false;
+            //if (ok) emit canTransfer(all_connections.at(i));
+
+            //queueChecked(all_connections.at(i));
             emit canTransfer(all_connections.at(i));
         }
     }

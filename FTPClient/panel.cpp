@@ -374,5 +374,6 @@ void Panel::changePwd(const QString & pwd) {
 void Panel::startTransfers(QxFtp * , bool) {
     disconnect((*ftp_con), SIGNAL(x_done(QxFtp*, bool)), this, SLOT(startTransfers(QxFtp *, bool)));
     emit canTransfer((*ftp_con));
+    //emit canTransferNow();
 }
 

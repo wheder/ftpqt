@@ -71,7 +71,7 @@ void TransferQueueItem::setComplete(int amoutn) {
     m_sizeStart=amoutn;
 }
 
-void TransferQueueItem::updateProgress(QxFtp * /*conn*/, qint64 current, qint64 total) {
+void TransferQueueItem::updateProgress(QxFtp * conn, qint64 current, qint64 total) {
     m_progress->setValue(current);
     m_progress->setMaximum(total);
 }

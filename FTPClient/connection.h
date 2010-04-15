@@ -37,7 +37,6 @@ private:
     QQueue<TransferQueueItem *> pendingQueue;
     void startTransfer(QxFtp * conn ,TransferQueueItem * itemToTransfer);
     QList<QxFtp *> all_connections;
-    void setupTransfers();
     int max_connections;
 
 private slots:
@@ -50,6 +49,8 @@ private slots:
     void anonymousChanged(int newState);
     void addItemToTransferQueue(TransferQueueItem * item);
     void queueChecked(QxFtp * connection);
+    void queueCheckedFirst(QxFtp * connection);
+    void setupTransfers();
 
 signals:
     void pwdChanged(const QString &);
