@@ -44,8 +44,11 @@ private:
     bool localPanelActive;
     void uploadDir(QString local, QString ftp, QString dirname);
     void uploadFile(QString local, QString ftp, QString file);
+    void downloadDir(QString local, QString ftp, QString dirname);
+    void downloadFile(QString local, QString ftp, QString file);
     void deleteFile(QString ftp, QString fileName, bool delDirs);
 private slots:
+    void on_downloadButton_clicked();
     void on_uploadButton_clicked();
     void on_renameButton_clicked();
     void on_deleteButton_clicked();
