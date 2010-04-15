@@ -40,6 +40,7 @@ private:
     QString currentPathLocal, rootDirToDelete;
     QHash<QString, bool> isDirFTP;
     QString currentPathFTP;
+    QStringList filesFTPList;
     QxFtp **ftp_con;
     bool localPanelActive;
     void uploadDir(QString local, QString ftp, QString dirname);
