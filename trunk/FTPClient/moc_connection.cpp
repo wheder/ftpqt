@@ -23,7 +23,7 @@ static const uint qt_meta_data_Connection[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-      11,   14, // methods
+      13,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -44,6 +44,8 @@ static const uint qt_meta_data_Connection[] = {
      274,  265,   11,   11, 0x08,
      301,  296,   11,   11, 0x08,
      355,  344,   11,   11, 0x08,
+     376,  344,   11,   11, 0x08,
+     402,   11,   11,   11, 0x08,
 
        0        // eod
 };
@@ -59,6 +61,7 @@ static const char qt_meta_stringdata_Connection[] = {
     "newState\0anonymousChanged(int)\0item\0"
     "addItemToTransferQueue(TransferQueueItem*)\0"
     "connection\0queueChecked(QxFtp*)\0"
+    "queueCheckedFirst(QxFtp*)\0setupTransfers()\0"
 };
 
 const QMetaObject Connection::staticMetaObject = {
@@ -101,9 +104,11 @@ int Connection::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
         case 8: anonymousChanged((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 9: addItemToTransferQueue((*reinterpret_cast< TransferQueueItem*(*)>(_a[1]))); break;
         case 10: queueChecked((*reinterpret_cast< QxFtp*(*)>(_a[1]))); break;
+        case 11: queueCheckedFirst((*reinterpret_cast< QxFtp*(*)>(_a[1]))); break;
+        case 12: setupTransfers(); break;
         default: ;
         }
-        _id -= 11;
+        _id -= 13;
     }
     return _id;
 }

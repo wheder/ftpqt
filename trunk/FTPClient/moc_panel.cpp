@@ -23,36 +23,38 @@ static const uint qt_meta_data_Panel[] = {
        4,       // revision
        0,       // classname
        0,    0, // classinfo
-      14,   14, // methods
+      15,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       2,       // signalCount
+       3,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
       12,    7,    6,    6, 0x05,
-      34,   32,    6,    6, 0x05,
+      32,    6,    6,    6, 0x05,
+      51,   49,    6,    6, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      82,    6,    6,    6, 0x08,
-     108,    6,    6,    6, 0x08,
-     134,    6,    6,    6, 0x08,
-     160,    6,    6,    6, 0x08,
-     193,  181,    6,    6, 0x08,
-     246,  181,    6,    6, 0x08,
-     305,  301,    6,    6, 0x08,
-     324,    6,    6,    6, 0x08,
-     354,  347,    6,    6, 0x08,
-     401,  398,    6,    6, 0x08,
-     429,  347,    6,    6, 0x08,
-     460,  347,    6,    6, 0x08,
+      99,    6,    6,    6, 0x08,
+     125,    6,    6,    6, 0x08,
+     151,    6,    6,    6, 0x08,
+     177,    6,    6,    6, 0x08,
+     210,  198,    6,    6, 0x08,
+     263,  198,    6,    6, 0x08,
+     322,  318,    6,    6, 0x08,
+     341,    6,    6,    6, 0x08,
+     371,  364,    6,    6, 0x08,
+     418,  415,    6,    6, 0x08,
+     446,  364,    6,    6, 0x08,
+     477,  364,    6,    6, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_Panel[] = {
-    "Panel\0\0conn\0canTransfer(QxFtp*)\0i\0"
+    "Panel\0\0conn\0canTransfer(QxFtp*)\0"
+    "canTransferNow()\0i\0"
     "newTransferQueueItemCreated(TransferQueueItem*)\0"
     "on_uploadButton_clicked()\0"
     "on_renameButton_clicked()\0"
@@ -97,22 +99,23 @@ int Panel::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: canTransfer((*reinterpret_cast< QxFtp*(*)>(_a[1]))); break;
-        case 1: newTransferQueueItemCreated((*reinterpret_cast< TransferQueueItem*(*)>(_a[1]))); break;
-        case 2: on_uploadButton_clicked(); break;
-        case 3: on_renameButton_clicked(); break;
-        case 4: on_deleteButton_clicked(); break;
-        case 5: on_cdUpFTP_clicked(); break;
-        case 6: on_treeWidgetFTP_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 7: on_treeWidgetLocal_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
-        case 8: changePwd((*reinterpret_cast< const QString(*)>(_a[1]))); break;
-        case 9: on_cdUpLocal_clicked(); break;
-        case 10: directoryStructureOnFtpCreated((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 11: startTransfers((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 12: filesOnFTPDeleted((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 13: dirsOnFTPDeleted((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 1: canTransferNow(); break;
+        case 2: newTransferQueueItemCreated((*reinterpret_cast< TransferQueueItem*(*)>(_a[1]))); break;
+        case 3: on_uploadButton_clicked(); break;
+        case 4: on_renameButton_clicked(); break;
+        case 5: on_deleteButton_clicked(); break;
+        case 6: on_cdUpFTP_clicked(); break;
+        case 7: on_treeWidgetFTP_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 8: on_treeWidgetLocal_itemActivated((*reinterpret_cast< QTreeWidgetItem*(*)>(_a[1])),(*reinterpret_cast< int(*)>(_a[2]))); break;
+        case 9: changePwd((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 10: on_cdUpLocal_clicked(); break;
+        case 11: directoryStructureOnFtpCreated((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 12: startTransfers((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 13: filesOnFTPDeleted((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 14: dirsOnFTPDeleted((*reinterpret_cast< QxFtp*(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         default: ;
         }
-        _id -= 14;
+        _id -= 15;
     }
     return _id;
 }
@@ -125,9 +128,15 @@ void Panel::canTransfer(QxFtp * _t1)
 }
 
 // SIGNAL 1
+void Panel::canTransferNow()
+{
+    QMetaObject::activate(this, &staticMetaObject, 1, 0);
+}
+
+// SIGNAL 2
 void Panel::newTransferQueueItemCreated(TransferQueueItem * _t1)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
-    QMetaObject::activate(this, &staticMetaObject, 1, _a);
+    QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 QT_END_MOC_NAMESPACE

@@ -60,6 +60,7 @@ private slots:
     void dirsOnFTPDeleted(QxFtp *,bool error);
 signals:
     void canTransfer(QxFtp * conn);
+    void canTransferNow();
     void newTransferQueueItemCreated(TransferQueueItem * i);
 };
 
