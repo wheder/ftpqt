@@ -194,7 +194,7 @@ void Connection::ftpCommandFinished(QxFtp * origin, int id, bool error)
 
 void Connection::addToList(QxFtp * origin, const QUrlInfo &urlInfo)
 {
-    panel->addItemFTP(urlInfo);
+    panel->addItemFTP(urlInfo);               
 }
 
 
